@@ -15,21 +15,19 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="C:/Users/vnameit/Documents/Sampath/JAR/mongo-java-driver-3.1.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vnameit/Documents/Sampath/JAR/mongo.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vnameit/Documents/Sampath/JAR/com.mongodb.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vnameit/Documents/Sampath/JAR/mysql-connector-java-5.1.37/mysql-connector-java-5.1.37-bin.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vnameit/Documents/Sampath/JAR/jackson-core-2.6.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vnameit/Documents/Sampath/JAR/jackson-all-1.9.0.jar/jackson-all-1.9.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vnameit/Documents/Sampath/JAR/org.springframework.jdbc.jar/org.springframework.jdbc.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vnameit/Documents/Sampath/JAR/org.springframework.transaction_3.0.5.RELEASE.jar/org.springframework.transaction_3.0.5.RELEASE.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vnameit/Documents/Sampath/JAR/spring-core-3.0.0.RELEASE.jar/spring-core-3.0.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vnameit/Documents/Sampath/JAR/commons-logging-1.2-bin/commons-logging-1.2/commons-logging-1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vnameit/Documents/Sampath/JAR/java-json.jar/java-json.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vnameit/Documents/Sampath/JAR/json-simple.jar/json-simple.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vnameit/Documents/Sampath/JAR/logback-classic-1.0.11.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vnameit/Documents/Sampath/JAR/logback-core-1.0.13.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vnameit/Documents/Sampath/JAR/ehcache-dependency-slf4j-api-1.6.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vnameit/Documents/Sampath/JAR/slf4j-1.7.12/slf4j-api-1.7.12.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/ehcache-dependency-slf4j-api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/jackson-all-1.9.0.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/jackson-core-2.6.3.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/java-json.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/json-simple.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/logback-classic-1.0.11.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/logback-core-1.0.13.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/mongo-java-driver-3.1.0.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/mysql-connector-java-5.1.37-bin.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/org.springframework.jdbc.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/org.springframework.transaction_3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/slf4j-api-1.7.12.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/spring-core-3.0.0.RELEASE.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

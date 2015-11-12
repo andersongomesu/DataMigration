@@ -18,6 +18,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 //import org.codehaus.jackson.node.ObjectNode;
 import org.codehaus.jackson.node.ObjectNode;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import com.data.mig.constants.IApplicationConstants;
 import com.data.mig.json.mapper.JsonNodeRowMapper;
@@ -124,12 +125,13 @@ public class MysqlDataExtractWithChildTables {
 										JsonNode childJsonNode = new JsonNodeRowMapper(objectMapper).mapRow(
 												childTableResultSet,
 												childTableResultSet.getRow());
-										childJsonArray.addAll(childJsonNode);
+										
+										childJsonArray.add(childJsonNode.toString());
 									}
 									
 								}
 								
-								((ObjectNode) childJsonNode).put(childTableDetails.getTableName() + childTableResultSet.getRow(), childJsonNode);
+								//((ObjectNode) childJsonNode).put(childTableDetails.getTableName() + childTableResultSet.getRow(), childJsonNode);
 							}
 						}
 
