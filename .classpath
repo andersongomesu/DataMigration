@@ -21,7 +21,6 @@
 	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/jackson-core-2.6.3.jar"/>
 	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/java-json.jar"/>
 	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/json-simple.jar"/>
-	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/logback-classic-1.0.11.jar"/>
 	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/logback-core-1.0.13.jar"/>
 	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/mongo-java-driver-3.1.0.jar"/>
 	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/mysql-connector-java-5.1.37-bin.jar"/>
@@ -29,5 +28,17 @@
 	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/org.springframework.transaction_3.0.5.RELEASE.jar"/>
 	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/slf4j-api-1.7.12.jar"/>
 	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/spring-core-3.0.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/bsh-2.0b4.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/cassandra-driver-core-2.0.2.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/cassandra-driver-dse-2.0.2.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/guava-16.0.1.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/jcommander-1.27.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/lz4-1.2.0.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/metrics-core-3.0.2.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/netty-3.9.0.Final.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/slf4j-log4j12-1.7.6.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/snappy-java-1.0.5.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/logback-classic-1.0.11.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
