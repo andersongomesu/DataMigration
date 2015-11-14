@@ -26,7 +26,7 @@ public class MysqlDataExtractWithChildTablesTest {
 
 		MysqlDataExtractWithChildTables mysqlDataExtractWithChildTables = new MysqlDataExtractWithChildTables();
 
-		boolean extractResult = mysqlDataExtractWithChildTables.extractMysqlDataIntoJsonFile(IApplicationConstants.defaultMySqlSchemaName, "customers", 
+		boolean extractResult = mysqlDataExtractWithChildTables.extractMysqlDataIntoJsonFile(IApplicationConstants.defaultMySqlSchemaName, "orders", 
 				10L, "");
 		
 		Assert.assertTrue(extractResult);

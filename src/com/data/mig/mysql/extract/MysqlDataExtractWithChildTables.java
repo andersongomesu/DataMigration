@@ -15,10 +15,8 @@ import java.util.Map;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
-//import org.codehaus.jackson.node.ObjectNode;
+import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import com.data.mig.constants.IApplicationConstants;
 import com.data.mig.json.mapper.JsonNodeRowMapper;
@@ -34,6 +32,7 @@ public class MysqlDataExtractWithChildTables {
 			String parentTableName, long noOfRecordsToBeExtracted,
 			String filePath) throws SQLException {
 
+		System.out.println("### Start of process ###");
 		boolean extractStatus = false;
 
 		ResultSet parentTableResultSet = null;
@@ -68,6 +67,8 @@ public class MysqlDataExtractWithChildTables {
 
 			if (parentTableSelectQuery != null) {
 				parentTableStatement = conn.createStatement();
+				
+				//Execute the parent table select query
 				parentTableResultSet = parentTableStatement
 						.executeQuery(parentTableSelectQuery.toString());
 
@@ -93,48 +94,60 @@ public class MysqlDataExtractWithChildTables {
 	
 					}
 					
+					//Loop through the parent table result set
 					while (parentTableResultSet.next()) {
-						// System.out.println(parentTableResultSet.getRow());
 						jsonNode = new JsonNodeRowMapper(objectMapper).mapRow(
 								parentTableResultSet,
 								parentTableResultSet.getRow());
-						
+
+						//Check whether child tables exists
 						if (childTableDetailsList != null) {
+							ArrayNode childArrayNode = null;
 							for (ChildTableDetails childTableDetails : childTableDetailsDBQueryList) {
 								
 								int columnIndex = 0;
+								
+								//Set the child table keys
 								for (Map.Entry<String, String> keyColumnNameAndDataType: childTableDetails.getKeyColumnNameAndDataType().entrySet()) {
 									
 									if (keyColumnNameAndDataType.getValue() != null && keyColumnNameAndDataType.getValue().equalsIgnoreCase("int")) {
-										childTableDetails.getPreparedStatement().setInt(++columnIndex, Integer.valueOf(keyColumnNameAndDataType.getKey()));	
+										childTableDetails.getPreparedStatement().setInt(++columnIndex, Integer.valueOf(jsonNode.get(keyColumnNameAndDataType.getKey()).toString()));	
 									} else if (keyColumnNameAndDataType.getValue() != null && keyColumnNameAndDataType.getValue().equalsIgnoreCase("String")) {
-										childTableDetails.getPreparedStatement().setString(++columnIndex, keyColumnNameAndDataType.getKey());
+										childTableDetails.getPreparedStatement().setString(++columnIndex, jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
 									}
 										
 								}
 								
+								//Execute the child table query
 								ResultSet childTableResultSet = childTableDetails.getPreparedStatement().executeQuery();
 								
-								JSONArray childJsonArray = null;
+								
 								
 								if (childTableResultSet != null) {
 									
-									childJsonArray = new JSONArray();
+									childArrayNode = objectMapper.createArrayNode();
 									
+									//Loop through the child table result
 									while (childTableResultSet.next()) {
+										
 										JsonNode childJsonNode = new JsonNodeRowMapper(objectMapper).mapRow(
 												childTableResultSet,
 												childTableResultSet.getRow());
 										
-										childJsonArray.add(childJsonNode.toString());
+										
+										//Add the child table records to array
+										childArrayNode.add(childJsonNode);
 									}
 									
 								}
 								
-								//((ObjectNode) childJsonNode).put(childTableDetails.getTableName() + childTableResultSet.getRow(), childJsonNode);
+								//Add the child table array into main node
+								((ObjectNode) jsonNode).put(childTableDetails.getTableName(), childArrayNode);
 							}
+							
 						}
 
+						//Put the node into target object
 						targetObject
 								.put(parentTableName
 										+ parentTableResultSet.getRow(),
@@ -142,6 +155,8 @@ public class MysqlDataExtractWithChildTables {
 
 					}
 					System.out.println("No of records :" + targetObject.size());
+					
+					//Write the target object into file
 					objectMapper
 							.writeValue(
 									new File(
@@ -151,7 +166,7 @@ public class MysqlDataExtractWithChildTables {
 				}
 
 				conn.close();
-				return true;		
+				extractStatus = true;		
 			}
 
 		} catch (SQLException | IOException e) {
@@ -161,6 +176,7 @@ public class MysqlDataExtractWithChildTables {
 			conn.close();
 		}
 
+		System.out.println("### End of process ###");
 		return extractStatus;
 
 	}

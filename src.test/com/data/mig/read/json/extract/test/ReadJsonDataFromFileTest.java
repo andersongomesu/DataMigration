@@ -16,7 +16,7 @@ public class ReadJsonDataFromFileTest {
 		
 		ReadJsonDataFromFile readJsonDataFromFile = new ReadJsonDataFromFile();
 
-		boolean fileReadSuccess = readJsonDataFromFile.readJsonDataFromFile("D:\\Sampath\\MS\\Dissertation\\MySQL\\extract.json");
+		boolean fileReadSuccess = readJsonDataFromFile.readJsonDataFromFile("D:\\Sampath\\MS\\Dissertation\\MySQL\\extract.json", "orders");
 
 		Assert.assertTrue(fileReadSuccess);
 

@@ -15,11 +15,13 @@ import com.mysql.jdbc.StringUtils;
 
 public class ReadJsonDataFromFile {
 
-	public boolean readJsonDataFromFile(String filePath) {
+	public boolean readJsonDataFromFile(String filePath, String rootTableName) {
 
 		boolean loadStatus = false;
+		
+		System.out.println("### Start of process ###");
 
-		Map<String, Object> jsonDataMap = readFile(filePath);
+		Map<String, Object> jsonDataMap = readFile(filePath, rootTableName);
 
 		if (jsonDataMap != null) {
 
@@ -34,12 +36,12 @@ public class ReadJsonDataFromFile {
 
 			for (Map.Entry<String, Object> entrySet : jsonDataMap.entrySet()) {
 				
-				Map <String, Object> customerMap = new LinkedHashMap <String, Object> ();
+				Map <String, Object> rootTableMap = new LinkedHashMap <String, Object> ();
 				
 				//customerMap.put(entrySet.getKey().substring(0, entrySet.getKey().length()-1), entrySet.getValue());
-				customerMap.put("customers", entrySet.getValue());
+				rootTableMap.put(rootTableName, entrySet.getValue());
 
-				BasicDBObject basicDbObject = new BasicDBObject(customerMap);
+				BasicDBObject basicDbObject = new BasicDBObject(rootTableMap);
 				mongoCollectionInsert.insertIntoCollection("test", "mycol111",
 						basicDbObject);
 
@@ -50,10 +52,11 @@ public class ReadJsonDataFromFile {
 		}
 
 		loadStatus = true;
+		System.out.println("### End of process ###");
 		return loadStatus;
 	}
 
-	public Map<String, Object> readFile(String filePath) {
+	public Map<String, Object> readFile(String filePath, String rootTableName) {
 
 		FileReader reader = null;
 
@@ -67,8 +70,8 @@ public class ReadJsonDataFromFile {
 
 			long i = 1;
 			while (true) {
-				String customerKey = "customers" + i++;
-				JsonNode idNode = rootNode.path(customerKey);
+				String rootTableKey = rootTableName + i++;
+				JsonNode idNode = rootNode.path(rootTableKey);
 				if (idNode == null
 						|| StringUtils.isNullOrEmpty(idNode.toString())) {
 					break;
@@ -76,7 +79,7 @@ public class ReadJsonDataFromFile {
 					if (jsonMap == null) {
 						jsonMap = new LinkedHashMap<String, Object>();
 					}
-					jsonMap.put(customerKey, idNode.toString());
+					jsonMap.put(rootTableKey, idNode.toString());
 				}
 			}
 			System.out.println("Number of records processed :" + i);
