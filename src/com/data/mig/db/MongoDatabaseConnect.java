@@ -11,7 +11,7 @@ public class MongoDatabaseConnect {
 	private String host = "localhost";
 	private Integer port = 27017;
 
-	@SuppressWarnings({ "deprecation", "resource" })
+	@SuppressWarnings({ "deprecation" })
 	public DB getMongoDBConnection() {
 
 		DB db = null;

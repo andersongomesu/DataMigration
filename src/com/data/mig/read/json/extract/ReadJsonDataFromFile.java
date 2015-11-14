@@ -9,50 +9,28 @@ import java.util.Map;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.data.mig.db.MongoCollectionInsert;
-import com.mongodb.BasicDBObject;
+import com.data.mig.mongo.utils.MongoDatabaseUtils;
 import com.mysql.jdbc.StringUtils;
 
 public class ReadJsonDataFromFile {
 
-	public boolean readJsonDataFromFile(String filePath, String rootTableName) {
+	public boolean readJsonDataFromFile(String mongoDatabaseName, String collectionName, String filePath,
+			String rootTableName) {
 
 		boolean loadStatus = false;
-		
-		System.out.println("### Start of process ###");
 
+		System.out.println("### Start of JSON file read process ###");
+
+		// 1. Read from file
 		Map<String, Object> jsonDataMap = readFile(filePath, rootTableName);
 
-		if (jsonDataMap != null) {
+		MongoDatabaseUtils mongoDatabaseUtils = new MongoDatabaseUtils();
 
-			System.out.println("JSON array from file is not null");
+		// 2. Load into Mongo collection
+		loadStatus = mongoDatabaseUtils.writeMapIntoMongoCollection(mongoDatabaseName, collectionName, rootTableName,
+				jsonDataMap);
 
-			MongoCollectionInsert mongoCollectionInsert = new MongoCollectionInsert();
-
-			/*
-			 * mongoCollectionInsert.insertIntoCollection("test", "mycol",
-			 * MongoDbBasicConverters.fromMapToDBObject(jsonDataMap));
-			 */
-
-			for (Map.Entry<String, Object> entrySet : jsonDataMap.entrySet()) {
-				
-				Map <String, Object> rootTableMap = new LinkedHashMap <String, Object> ();
-				
-				//customerMap.put(entrySet.getKey().substring(0, entrySet.getKey().length()-1), entrySet.getValue());
-				rootTableMap.put(rootTableName, entrySet.getValue());
-
-				BasicDBObject basicDbObject = new BasicDBObject(rootTableMap);
-				mongoCollectionInsert.insertIntoCollection("test", "mycol111",
-						basicDbObject);
-
-				System.out.println(entrySet.getValue());
-
-			}
-
-		}
-
-		loadStatus = true;
-		System.out.println("### End of process ###");
+		System.out.println("### End of JSON file read process ###");
 		return loadStatus;
 	}
 
@@ -72,8 +50,7 @@ public class ReadJsonDataFromFile {
 			while (true) {
 				String rootTableKey = rootTableName + i++;
 				JsonNode idNode = rootNode.path(rootTableKey);
-				if (idNode == null
-						|| StringUtils.isNullOrEmpty(idNode.toString())) {
+				if (idNode == null || StringUtils.isNullOrEmpty(idNode.toString())) {
 					break;
 				} else {
 					if (jsonMap == null) {
