@@ -8,22 +8,24 @@ import com.datastax.driver.core.ResultSet;
 public class CassandraDatabaseExecute {
 
 	
-	public ResultSet executeCassandraQuery(Cluster dbcluster, String keyspaceName,String query) {
+	public boolean executeCassandraQuery(Cluster dbcluster, String keyspaceName,String query) {
 
 		Session dbsession = null;
 		ResultSet results=null;
+		boolean executeSuccess =false;
 
 		try {
 			dbsession= dbcluster.connect(keyspaceName);
 
 			results = dbsession.execute(query);
-
+			executeSuccess = true;    
 
 		} catch (Exception ce) {
+			executeSuccess=false;
 			System.out.println("Query execute error code :" + ce.getMessage());
 		}
 
-		return results;
+		return executeSuccess;
 
 	}
 	

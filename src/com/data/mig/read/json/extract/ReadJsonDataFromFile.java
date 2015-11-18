@@ -9,6 +9,7 @@ import java.util.Map;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.data.mig.cassandra.utils.CassandraDatabaseUtils;
 import com.data.mig.mongo.utils.MongoDatabaseUtils;
 import com.mysql.jdbc.StringUtils;
 
@@ -34,6 +35,26 @@ public class ReadJsonDataFromFile {
 		return loadStatus;
 	}
 
+	
+	public boolean readJsonDataFromFileintoCassandraDatabase(String keyspaceName,String rootColumnFamilyName, String filePath) {
+
+		boolean loadStatus = false;
+
+		System.out.println("### Start of JSON file read process ###");
+
+		// 1. Read from file
+		Map<String, Object> jsonDataMap = readFile(filePath, rootColumnFamilyName);
+
+		CassandraDatabaseUtils cassandradatabaseUtils = new CassandraDatabaseUtils();
+
+		// 2. Load into Cassandra
+		
+		loadStatus = cassandradatabaseUtils.writeMapIntoCassandraDatabase(keyspaceName, rootColumnFamilyName, jsonDataMap);
+				
+		System.out.println("### End of JSON file read process ###");
+		return loadStatus;
+	}
+	
 	public Map<String, Object> readFile(String filePath, String rootTableName) {
 
 		FileReader reader = null;

@@ -14,7 +14,9 @@ public class CassandraDatabaseColumnFamily {
 		try {
 			dbsession= dbcluster.connect(keyspaceName);
 
-			dbsession.execute("CREATE TABLE "+ columnfamilyName + "(title text PRIMARY KEY" +");");
+			String id=columnfamilyName+"_id";
+			
+			dbsession.execute("CREATE TABLE "+ columnfamilyName + "("+id +" uuid PRIMARY KEY" +");");
 
 
 		} catch (Exception ce) {

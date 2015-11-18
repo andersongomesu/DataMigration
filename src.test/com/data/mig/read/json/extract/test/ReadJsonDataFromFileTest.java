@@ -21,5 +21,16 @@ public class ReadJsonDataFromFileTest {
 		Assert.assertTrue(fileReadSuccess);
 
 	}
+	@Test
+	public void getMysqlDataExtractForCassandraTest() throws SQLException {
+		
+		ReadJsonDataFromFile readJsonDataFromFile = new ReadJsonDataFromFile();
+
+		boolean fileReadSuccess = readJsonDataFromFile.readJsonDataFromFileintoCassandraDatabase("mykeyspace","customers", "D:\\Habi\\MS\\Git\\MySQL\\extract.json");
+
+		Assert.assertTrue(fileReadSuccess);
+
+	}
+
 
 }

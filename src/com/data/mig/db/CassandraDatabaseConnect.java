@@ -11,7 +11,7 @@ public class CassandraDatabaseConnect {
 	
 	private String node = "127.0.0.1";
 	
-	@SuppressWarnings({ "deprecation" })
+	
 	public Cluster getCassandraDBConnection() {
 
 		
@@ -41,7 +41,7 @@ public class CassandraDatabaseConnect {
 
 	}
 	
-	@SuppressWarnings({ "deprecation", "resource" })
+	
 	public Cluster getCassandraDBConnection(String nodename) {
 
 		

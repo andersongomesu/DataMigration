@@ -23,7 +23,7 @@ public class CassandraDatabaseColumnFamilyTest {
 	    
 		Cluster cluster = cassandraDatabaseConnect.getCassandraDBConnection();
 		
-		Session dbsession = cassandraColumnFamily.createCassandraColumnFamily(cluster, "mykeyspace", "users");
+		Session dbsession = cassandraColumnFamily.createCassandraColumnFamily(cluster, "mykeyspace", "users1");
 		Assert.assertNotNull(dbsession);
 		
 	}
@@ -36,7 +36,7 @@ public class CassandraDatabaseColumnFamilyTest {
 		    
 			Cluster cluster = cassandraDatabaseConnect.getCassandraDBConnection();
 			
-			Session dbsession = cassandraColumnFamily.createCassandraColumnFamily(cluster, "mykeyspace", "junitusers");
+			Session dbsession = cassandraColumnFamily.createCassandraColumnFamily(cluster, "mykeyspace", "junitusers1");
 			Assert.assertNotNull(dbsession);
 		
 	}	
@@ -50,7 +50,7 @@ public class CassandraDatabaseColumnFamilyTest {
 	    
 		Cluster cluster = cassandraDatabaseConnect.getCassandraDBConnection();
 		
-		Session dbsession = cassandraColumnFamily.deleteCassandraColumnFamily(cluster, "mykeyspace", "junitusers");
+		Session dbsession = cassandraColumnFamily.deleteCassandraColumnFamily(cluster, "mykeyspace", "junitusers1");
 		Assert.assertNotNull(dbsession);
 		
 	}	

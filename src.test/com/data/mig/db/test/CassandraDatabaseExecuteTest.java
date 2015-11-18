@@ -26,7 +26,7 @@ public class CassandraDatabaseExecuteTest {
 		Cluster cluster = cassandraDatabaseConnect.getCassandraDBConnection();
 		
 		String query ="select * from users;";
-		ResultSet results = cassandraexecute.executeCassandraQuery(cluster, "mykeyspace", query);
+		boolean results = cassandraexecute.executeCassandraQuery(cluster, "mykeyspace", query);
 		Assert.assertNotNull(results);
 		
 	}	
