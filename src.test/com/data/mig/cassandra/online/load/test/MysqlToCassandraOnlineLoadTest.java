@@ -9,7 +9,7 @@ import com.data.mig.constants.IApplicationConstants;
 public class MysqlToCassandraOnlineLoadTest {
 
 	@Test
-	public void loadDataFromMysqlToMongoIncludingChildTablesTest() {
+	public void loadDataFromMysqlToCassandraIncludingChildTablesTest() {
 		MysqlToCassandraOnlineLoad mysqlToCassandraOnlineLoad = new MysqlToCassandraOnlineLoad();
 
 		// Extract including the child tables
@@ -20,7 +20,7 @@ public class MysqlToCassandraOnlineLoadTest {
 	}
 
 	@Test
-	public void loadDataFromMysqlToMongoWithoutChildTablesTest() {
+	public void loadDataFromMysqlToCassandraWithoutChildTablesTest() {
 		MysqlToCassandraOnlineLoad mysqlToCassandraOnlineLoad = new MysqlToCassandraOnlineLoad();
 
 		// Extract without the child tables
