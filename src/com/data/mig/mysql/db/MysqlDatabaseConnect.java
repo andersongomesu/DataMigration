@@ -5,11 +5,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MysqlDatabaseConnect {
+	
+   public static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 
 	public Connection getMySqlDBConnection() {
 
 		Connection conn = null;
 		try {
+			
+			Class.forName(JDBC_DRIVER);
+			//new WebappClassLoader(JDBC_DRIVER, true);
 			conn = DriverManager.getConnection("jdbc:mysql://localhost/classicmodels?"
 					+ "user=root&password=root");
 
@@ -20,6 +25,9 @@ public class MysqlDatabaseConnect {
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return conn;
 	}
@@ -29,6 +37,7 @@ public class MysqlDatabaseConnect {
 
 		Connection conn = null;
 		try {
+			Class.forName(JDBC_DRIVER); 
 			conn = DriverManager.getConnection("jdbc:mysql://localhost/" + schemaName + "?"
 					+ "user=" + userId + "&password=" +password);
 
@@ -39,6 +48,9 @@ public class MysqlDatabaseConnect {
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return conn;
 	}

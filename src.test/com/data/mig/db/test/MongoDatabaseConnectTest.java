@@ -1,11 +1,11 @@
 package com.data.mig.db.test;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 
 import com.data.mig.db.MongoDatabaseConnect;
 import com.mongodb.DB;
+
+import junit.framework.Assert;
 
 @SuppressWarnings("deprecation")
 public class MongoDatabaseConnectTest {

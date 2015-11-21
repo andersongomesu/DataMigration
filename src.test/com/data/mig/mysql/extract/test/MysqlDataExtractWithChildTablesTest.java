@@ -3,13 +3,13 @@ package com.data.mig.mysql.extract.test;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 
 import com.data.mig.constants.IApplicationConstants;
 import com.data.mig.mysql.db.MysqlDatabaseConnect;
 import com.data.mig.mysql.extract.MysqlDataExtractWithChildTables;
+
+import junit.framework.Assert;
 
 @SuppressWarnings("deprecation")
 public class MysqlDataExtractWithChildTablesTest {

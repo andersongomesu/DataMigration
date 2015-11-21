@@ -35,6 +35,8 @@ public interface IApplicationConstants {
 		    "and cu.table_schema = col.table_schema " +
 		    "and cu.table_name = col.table_name " +
 		    "and cu.column_name = col.column_name ";
+	
+	String retrieveMySQLTableDetails = "Select table_name from information_schema.tables where table_schema = ?";
 
 	String retriveMySqlColumnDetails = "select  table_name, column_name, data_type, column_key " +
 			"FROM information_schema.COLUMNS " +

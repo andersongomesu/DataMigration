@@ -1,7 +1,5 @@
 package com.data.mig.db.test;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 
 import com.data.mig.db.MongoCollectionInsert;
@@ -10,6 +8,8 @@ import com.data.mig.db.MongoDatabaseConnect;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+
+import junit.framework.Assert;
 
 @SuppressWarnings("deprecation")
 public class MongoCollectionInsertTest {

@@ -3,11 +3,11 @@ package com.data.mig.mysql.db.test;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 
 import com.data.mig.mysql.db.MysqlDatabaseConnect;
+
+import junit.framework.Assert;
 
 @SuppressWarnings("deprecation")
 public class MysqlDatabaseConnectTest {

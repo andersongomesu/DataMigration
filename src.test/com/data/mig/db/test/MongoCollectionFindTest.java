@@ -1,7 +1,5 @@
 package com.data.mig.db.test;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 
 import com.data.mig.db.MongoCollectionFind;
@@ -9,6 +7,8 @@ import com.data.mig.db.MongoDatabaseCollection;
 import com.data.mig.db.MongoDatabaseConnect;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+
+import junit.framework.Assert;
 
 @SuppressWarnings("deprecation")
 public class MongoCollectionFindTest {
