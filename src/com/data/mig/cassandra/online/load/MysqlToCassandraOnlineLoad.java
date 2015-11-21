@@ -18,7 +18,7 @@ public class MysqlToCassandraOnlineLoad {
 		MysqlDataExtractWithChildTables mysqlDataExtractWithChildTables = null;
 		MysqlDataExtract mysqlDataExtract = null;
 		Map<String, Object> dataExtractMap = null;
-		MongoDatabaseUtils mongoDatabaseUtils = null;
+		
 
 		try {
 

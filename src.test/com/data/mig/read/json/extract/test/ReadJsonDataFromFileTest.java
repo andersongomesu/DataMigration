@@ -26,7 +26,7 @@ public class ReadJsonDataFromFileTest {
 		
 		ReadJsonDataFromFile readJsonDataFromFile = new ReadJsonDataFromFile();
 
-		boolean fileReadSuccess = readJsonDataFromFile.readJsonDataFromFileintoCassandraDatabase("mykeyspace","customers", "D:\\Habi\\MS\\Git\\MySQL\\extract.json");
+		boolean fileReadSuccess = readJsonDataFromFile.readJsonDataFromFileintoCassandraDatabase("mykeyspace","customers", "D:\\Sampath\\MS\\Dissertation\\MySQL\\extract.json");
 
 		Assert.assertTrue(fileReadSuccess);
 

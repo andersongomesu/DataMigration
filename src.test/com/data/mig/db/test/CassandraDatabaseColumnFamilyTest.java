@@ -23,7 +23,7 @@ public class CassandraDatabaseColumnFamilyTest {
 	    
 		Cluster cluster = cassandraDatabaseConnect.getCassandraDBConnection();
 		
-		Session dbsession = cassandraColumnFamily.createCassandraColumnFamily(cluster, "mykeyspace", "users1");
+		Session dbsession = cassandraColumnFamily.createCassandraColumnFamily(cluster, "mykeyspace", "customers");
 		Assert.assertNotNull(dbsession);
 		
 	}

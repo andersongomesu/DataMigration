@@ -1,6 +1,6 @@
 package com.data.mig.mvc.controller;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -10,8 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.data.mig.constants.IApplicationConstants;
 import com.data.mig.mysql.db.MysqlSchemaDetails;
-import com.sun.jersey.core.util.FeaturesAndProperties;
-import org.glassfish.jersey.server.spi.Container;
+import org.glassfish.jersey.client.ClientConfig;
 
 @Controller
 @RequestMapping("/dm")
