@@ -33,7 +33,7 @@ public class MysqlToMongoOnlineLoad {
 			}
 
 			mongoDatabaseUtils = new MongoDatabaseUtils();
-			dataLoadStatus = mongoDatabaseUtils.writeMapIntoMongoCollection(targetDatabaseName, targetCollectionName,
+			dataLoadStatus = mongoDatabaseUtils.writeMapIntoMongoCollectionForOnlineLoad(targetDatabaseName, targetCollectionName,
 					sourceTableName, dataExtractMap);
 
 		} catch (SQLException e) {
