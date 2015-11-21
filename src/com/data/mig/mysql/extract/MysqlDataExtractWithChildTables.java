@@ -128,7 +128,12 @@ public class MysqlDataExtractWithChildTables {
 											&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("String")) {
 										childTableDetails.getPreparedStatement().setString(++columnIndex,
 												jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
+									} else if (keyColumnNameAndDataType.getValue() != null
+											&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("varchar")) {
+										childTableDetails.getPreparedStatement().setString(++columnIndex,
+												jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
 									}
+									
 
 								}
 
