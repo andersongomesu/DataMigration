@@ -2,12 +2,9 @@ package com.data.mig.db.test;
 
 import org.junit.Test;
 
-import com.data.mig.db.CassandraDatabaseColumnFamily;
 import com.data.mig.db.CassandraDatabaseConnect;
 import com.data.mig.db.CassandraDatabaseExecute;
 import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.ResultSet;
-import com.datastax.driver.core.Session;
 
 import junit.framework.Assert;
 

@@ -10,7 +10,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.data.mig.constants.IApplicationConstants;
 import com.data.mig.mysql.db.MysqlSchemaDetails;
-import org.glassfish.jersey.client.ClientConfig;
 
 @Controller
 @RequestMapping("/dm")

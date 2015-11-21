@@ -7,9 +7,10 @@ import com.datastax.driver.core.Cluster;
 
 import junit.framework.Assert;
 
-
+@SuppressWarnings("deprecation")
 public class CassandraDatabaseConnectTest {
 	
+
 	@Test
 	public void getCassandraDatabaseConnectTest() {
 		CassandraDatabaseConnect cassandraDatabaseConnect = new CassandraDatabaseConnect();
