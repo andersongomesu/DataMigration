@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
@@ -15,6 +16,56 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="src.test"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_72">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0">
+		<attributes>
+			<attribute name="owner.project.facets" value="jst.web"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="WebContent/lib/bsh-2.0b4.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/cassandra-driver-core-2.0.2.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/cassandra-driver-dse-2.0.2.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/guava-16.0.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/jcommander-1.27.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/lz4-1.2.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/metrics-core-3.0.2.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/netty-3.9.0.Final.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/slf4j-api-1.7.5.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/slf4j-log4j12-1.7.6.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/snappy-java-1.0.5.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/ehcache-dependency-slf4j-api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/jackson-all-1.9.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/jackson-core-2.6.3.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/java-json.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/json-lib-2.4-jdk15.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/json-rpc-1.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/json-simple-1.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/json-simple.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/JSON4J.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/logback-classic-1.0.11.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/logback-core-1.0.13.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/mongo-java-driver-3.1.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/mysql-connector-java-5.1.37-bin.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/org.springframework.jdbc.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/org.springframework.transaction_3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/slf4j-api-1.7.12.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/spring-core-3.0.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/commons-logging-1.2.jar"/>
+>>>>>>> b6efc5a40c625c95c2bfde52714d8c5421cfd457
 	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/ehcache-dependency-slf4j-api-1.6.1.jar"/>
 	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/jackson-all-1.9.0.jar"/>
 	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/jackson-core-2.6.3.jar"/>
@@ -37,6 +88,7 @@
 	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/slf4j-log4j12-1.7.6.jar"/>
 	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/snappy-java-1.0.5.jar"/>
 	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/logback-classic-1.0.11.jar"/>
+<<<<<<< HEAD
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/lib"/>
 	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/lib/com.sun.jersey.jersey-server-1.4.0.jar"/>
 	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/WebContent/WEB-INF/lib/aopalliance-repackaged-2.4.0-b31.jar"/>
@@ -81,3 +133,7 @@
 	<classpathentry kind="lib" path="D:/Sampath/workspaces/workspace_java/DataMigration/WebContent/WEB-INF/lib/jersey-server-2.22.1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
+=======
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>
+>>>>>>> b6efc5a40c625c95c2bfde52714d8c5421cfd457
