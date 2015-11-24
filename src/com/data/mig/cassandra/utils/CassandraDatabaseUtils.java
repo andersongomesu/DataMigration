@@ -219,7 +219,7 @@ public class CassandraDatabaseUtils {
 		return cassandraQueryExecuteSuccessFlag;
 	}
 
-	public void createChildColumnFamily(Cluster cluster, String keyspaceName, JSONArray JSONArrayValue,
+	public void createChildColumnFamily(Cluster cluster, String keyspaceName, JSONArray jsonArrayValue,
 			String childColumFamilyName) {
 		try {
 
@@ -229,7 +229,7 @@ public class CassandraDatabaseUtils {
 			CassandraDatabaseColumnFamily cassandraColumnFamily = new CassandraDatabaseColumnFamily();
 			cassandraColumnFamily.createCassandraColumnFamily(cluster, keyspaceName, childColumFamilyName);
 
-			Iterator i = JSONArrayValue.iterator();
+			Iterator i = jsonArrayValue.iterator();
 			while (i.hasNext()) {
 				JSONObject rootJSONObj = (JSONObject) i.next();
 				// String finalValue = (String)jsnObj.get("customerNumber");

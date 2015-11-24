@@ -5,17 +5,15 @@ import org.junit.runners.Suite;
 
 import com.data.mig.db.test.MongoDatabaseCollectionTest;
 import com.data.mig.db.test.MongoDatabaseConnectTest;
-import com.data.mig.mysql.extract.test.MysqlDataExtractTest;
-import com.data.mig.read.json.extract.test.ReadJsonDataFromFileToMongoTest;
+import com.data.mig.mongo.online.load.test.MysqlToMongoOnlineLoadTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 	MongoDatabaseConnectTest.class,
 	MongoDatabaseCollectionTest.class,
-	MysqlDataExtractTest.class,
-	ReadJsonDataFromFileToMongoTest.class
+	MysqlToMongoOnlineLoadTest.class
 	
 })
-public class MysqlToMongoBatchTestSuite {
+public class MysqlToMongoOnlineTestSuite {
 
 }
