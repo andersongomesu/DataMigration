@@ -63,4 +63,57 @@ public class MysqlTableColumnDetails {
 
 	}	
 
+	public Map<String, String> getMysqlTablePrimaryKey(Connection conn,
+			String schemaName, String tableName) {
+
+		Map<String, String> primaryColumnOfATable = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			if (conn == null) {
+				MysqlDatabaseConnect mysqlDatabaseConnect = new MysqlDatabaseConnect();
+				mysqlDatabaseConnect.getMySqlDBConnection(schemaName,
+						IApplicationConstants.defaultMySqlUserId,
+						IApplicationConstants.defaultMySqlPassword);
+
+			}
+
+			pstmt = conn
+					.prepareStatement(IApplicationConstants.retriveMySqlPrimaryDetails);
+			pstmt.setString(1, schemaName);
+			pstmt.setString(2, tableName);
+
+			rs = pstmt.executeQuery();
+
+			boolean isResultsetHasRecords = false;
+
+			if (rs != null) {
+
+				primaryColumnOfATable = new HashMap<String, String>();
+
+				while (rs.next()) {
+					isResultsetHasRecords = true;
+					primaryColumnOfATable.put(
+							rs.getString("column_name"),
+							rs.getString("data_type"));
+				}
+
+			}
+
+			if (!isResultsetHasRecords) {
+				primaryColumnOfATable = null;
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return primaryColumnOfATable;
+
+	}	
+	
+	
 }

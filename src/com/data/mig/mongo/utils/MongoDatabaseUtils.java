@@ -1,8 +1,12 @@
 package com.data.mig.mongo.utils;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import org.json.simple.JSONArray;
 
 import com.data.mig.db.MongoCollectionInsert;
 import com.mongodb.BasicDBObject;
@@ -94,6 +98,41 @@ public class MongoDatabaseUtils {
 		System.out.println("### End of write map to mongo collection process ###");
 
 		return writeMapToCollectionSuccessFlag;
+	}
+	
+	public String dataTypeFinder(Object value) {
+
+		String datatype = "text";
+
+		if (value == null) {
+			datatype = "text";
+		} else if (value instanceof Integer) {
+			datatype = "varint";
+		} else if (value instanceof String) {
+			datatype = "varchar";
+		} else if (value instanceof Boolean) {
+			datatype = "boolean";
+		} else if (value instanceof Date) {
+			datatype = "timestamp";
+		} else if (value instanceof Long) {
+			datatype = "varint";
+		} else if (value instanceof Double) {
+			datatype = "double";
+		} else if (value instanceof Float) {
+			datatype = "float";
+		} else if (value instanceof BigDecimal) {
+			datatype = "bigint";
+		} else if (value instanceof Byte) {
+			datatype = "int";
+		} else if (value instanceof byte[]) {
+			datatype = "list";
+		} else if (value instanceof JSONArray) {
+			datatype = "JSONArray";
+		} else {
+			datatype = value.getClass().toString();
+		}
+
+		return datatype;
 	}
 
 }

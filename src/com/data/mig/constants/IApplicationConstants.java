@@ -37,11 +37,17 @@ public interface IApplicationConstants {
 		    "and cu.column_name = col.column_name ";
 	
 	String retrieveMySQLTableDetails = "Select table_name from information_schema.tables where table_schema = ?";
-
+	
 	String retriveMySqlColumnDetails = "select  table_name, column_name, data_type, column_key " +
 			"FROM information_schema.COLUMNS " +
 			"WHERE table_schema = ? " +
-			"and table_name = ? ";
+			"and table_name = ? ";	
+
+	String retriveMySqlPrimaryDetails = "select  column_name " +
+			"FROM information_schema.COLUMNS " +
+			"WHERE table_schema = ? " +
+			"and table_name = ? " +
+			"and column_key = 'PRI' ";
 
 	
 }
