@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.codehaus.jackson.JsonNode;
@@ -41,7 +42,9 @@ public class JsonNodeRowMapper implements RowMapper<JsonNode> {
             } else if (value instanceof Boolean) {
                 objectNode.put(column, (Boolean) value);           
             } else if (value instanceof Date) {
-                objectNode.put(column, ((Date) value).getTime());                
+                //objectNode.put(column, ((Date) value).getTime());    
+            	SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss"); 
+            	objectNode.put(column, dt.format((Date) value));
             } else if (value instanceof Long) {
                 objectNode.put(column, (Long) value);                
             } else if (value instanceof Double) {

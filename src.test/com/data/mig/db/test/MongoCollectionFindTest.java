@@ -22,7 +22,7 @@ public class MongoCollectionFindTest {
 		
 		DB mongodb = mangoDatabaseConnect.getMongoDBConnection();
 		
-		DBCollection dbCollection = mangoDatabaseCollection.getMongoCollection(mongodb,"mycol");
+		DBCollection dbCollection = mangoDatabaseCollection.getMongoCollection(mongodb,"mycol111");
 		
 		Integer noOfRecords = mongoCollectionFind.findAllFromCollection(dbCollection);
 		 

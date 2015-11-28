@@ -31,5 +31,12 @@ public class TableDetails {
 	public void setColumnKey(String columnKey) {
 		this.columnKey = columnKey;
 	}
-
+	
+	
+	@Override
+	public String toString() {
+		return "TableDetails [tableName=" + tableName + ", columnName=" + columnName + ", dataType=" + dataType
+				+ ", columnKey=" + columnKey + "]";
+	}
+	
 }
