@@ -37,7 +37,7 @@ public class MongoDatabaseCollection {
 
 	}
 	
-	public DBCollection deleteMongoCollection(DB db, String collectionName) {
+	public DBCollection dropMongoCollection(DB db, String collectionName) {
 
 		DBCollection dbCollection = null;
 
@@ -48,11 +48,28 @@ public class MongoDatabaseCollection {
 			dbCollection.drop();
 
 		} catch (MongoCommandException me) {
-			System.out.println("Collection create error code :" + me.getErrorCode());
-			if (me.getErrorCode() == 48) {
-				System.out.println("Collection create error message :" + me.getErrorMessage());
-			}
+			System.out.println("Collection drop error code :" + me.getErrorCode());
+			System.out.println(me.toString());
+
+		}
+
+		return dbCollection;
+
+	}
+	
+	public DBCollection removeAllMongoCollection(DB db, String collectionName) {
+
+		DBCollection dbCollection = null;
+
+		try {
+
 			dbCollection = db.getCollection(collectionName);
+					
+			dbCollection.remove(new BasicDBObject());
+
+		} catch (MongoCommandException me) {			
+			System.out.println("Collection remove all error code :" + me.getErrorCode());
+			System.out.println(me.toString());
 
 		}
 

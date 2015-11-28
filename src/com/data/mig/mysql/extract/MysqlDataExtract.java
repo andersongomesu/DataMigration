@@ -18,6 +18,8 @@ import com.data.mig.mysql.db.MysqlTableColumnDetails;
 
 public class MysqlDataExtract {
 
+	private MysqlDataExtractQueryUtils mysqlDataExtractQueryUtils = new MysqlDataExtractQueryUtils ();
+	
 	public boolean extractMysqlDataIntoJsonFile(String schemaName, String parentTableName,
 			long noOfRecordsToBeExtracted, String filePath) throws SQLException {
 
@@ -29,7 +31,7 @@ public class MysqlDataExtract {
 
 		FileIoUtils fileIoUtils = new FileIoUtils();
 		extractStatus = fileIoUtils.write(targetObject, filePath);
-		
+
 		System.out.println("### End of extract and file write ###");
 
 		return extractStatus;
@@ -40,7 +42,7 @@ public class MysqlDataExtract {
 			long noOfRecordsToBeExtracted, String filePath, Map<String, String> primaryColumnValues)
 					throws SQLException {
 
-		System.out.println("### Start of mysql extract process ###");
+		System.out.println("### Start of mysql subsequent extract process ###");
 		boolean extractStatus = false;
 
 		Map<String, Object> targetObject = subsequentExtractMysqlDataIntoObject(schemaName, parentTableName,
@@ -48,8 +50,8 @@ public class MysqlDataExtract {
 
 		FileIoUtils fileIoUtils = new FileIoUtils();
 		extractStatus = fileIoUtils.write(targetObject, filePath);
-		
-		System.out.println("### End of mysql extract process ###");
+
+		System.out.println("### End of mysql subsequent extract process ###");
 
 		return extractStatus;
 
@@ -77,7 +79,7 @@ public class MysqlDataExtract {
 			// Map<String, String> primaryKeyOfTableMap =
 			// getPrimaryColumnDetails(conn, schemaName, parentTableName);
 
-			StringBuilder parentTableSelectQuery = constructSelectQueryForSubsequentExtract(schemaName,parentTableName,
+			StringBuilder parentTableSelectQuery = mysqlDataExtractQueryUtils.constructSelectQueryForSubsequentExtract(schemaName, parentTableName,
 					parentTableColumnDetails, noOfRecordsToBeExtracted, primaryColumnValues);
 
 			if (parentTableSelectQuery != null) {
@@ -112,7 +114,7 @@ public class MysqlDataExtract {
 
 	public Map<String, Object> extractMysqlDataIntoObject(String schemaName, String parentTableName,
 			long noOfRecordsToBeExtracted) throws SQLException {
-		
+
 		System.out.println("### Start of mysql extract process into object ###");
 
 		ResultSet parentTableResultSet = null;
@@ -130,7 +132,7 @@ public class MysqlDataExtract {
 
 			Map<String, String> parentTableColumnDetails = getColumnDetails(conn, schemaName, parentTableName);
 
-			StringBuilder parentTableSelectQuery = constructSelectQuery(parentTableName, parentTableColumnDetails,
+			StringBuilder parentTableSelectQuery = mysqlDataExtractQueryUtils.constructSelectQuery(schemaName, parentTableName, parentTableColumnDetails,
 					noOfRecordsToBeExtracted);
 
 			if (parentTableSelectQuery != null) {
@@ -157,7 +159,7 @@ public class MysqlDataExtract {
 		} finally {
 			conn.close();
 		}
-		
+
 		System.out.println("### End of mysql extract process into object ###");
 
 		return targetObject;
@@ -181,7 +183,7 @@ public class MysqlDataExtract {
 
 	}
 
-	private StringBuilder constructSelectQuery(String tableName, Map<String, String> tableColumnDetailsMap,
+/*	private StringBuilder constructSelectQuery(String tableName, Map<String, String> tableColumnDetailsMap,
 			Long limitNoOfRows) {
 
 		StringBuilder query = null;
@@ -212,81 +214,8 @@ public class MysqlDataExtract {
 
 		return query;
 
-	}
+	}*/
 
-	private StringBuilder constructSelectQueryForSubsequentExtract(String schemaName, String tableName,
-			Map<String, String> tableColumnDetailsMap, Long limitNoOfRows, Map<String, String> primaryKeyOfTableMap) {
 
-		StringBuilder query = null;
-
-		if (tableColumnDetailsMap != null) {
-
-			for (Map.Entry<String, String> entry : tableColumnDetailsMap.entrySet()) {
-
-				if (query == null) {
-					query = new StringBuilder();
-					query.append("select ");
-					query.append(entry.getKey());
-				} else {
-					query.append(", " + entry.getKey());
-				}
-
-			}
-
-			if (query != null) {
-				query.append(" from  ");
-				query.append(schemaName);
-				query.append(".");
-				query.append(tableName);
-			}
-
-			if (primaryKeyOfTableMap != null) {
-				
-				int noOfPrimaryKeys = 0;
-				
-				query.append(" where ");
-				for (Map.Entry<String, String> primaryKeyColumns : primaryKeyOfTableMap.entrySet()) {
-					
-					noOfPrimaryKeys++;
-					
-					query.append(primaryKeyColumns.getKey());
-					query.append(" > ");
-					query.append("'");
-					query.append(primaryKeyColumns.getValue());
-					query.append("'");
-					
-					if (noOfPrimaryKeys != primaryKeyOfTableMap.size()) {
-						query.append(" and ");	
-					}
-					
-				}
-				
-				query.append(" order by ");
-				
-				noOfPrimaryKeys = 0;
-				for (Map.Entry<String, String> primaryKeyColumns : primaryKeyOfTableMap.entrySet()) {
-					
-					noOfPrimaryKeys++;
-					query.append(primaryKeyColumns.getKey());
-					if (noOfPrimaryKeys != primaryKeyOfTableMap.size()) {
-						query.append(" , ");	
-					}
-					
-				}
-
-			}
-
-			if (query != null) {
-				query.append(" limit ");
-				query.append(limitNoOfRows);
-
-			}
-
-		}
-
-		System.out.println("Extract query : " + query.toString());
-		return query;
-
-	}
 
 }
