@@ -44,7 +44,7 @@ public class MongoDatabaseConnect {
 
 	}
 	
-	@SuppressWarnings({ "deprecation", "resource" })
+	@SuppressWarnings({ "deprecation" })
 	public DB getMongoDBConnection(String databaseName) {
 
 		DB db = null;
@@ -63,6 +63,23 @@ public class MongoDatabaseConnect {
 		}
 
 		return db;
+
+	}
+	
+	public MongoClient getMongoDBClient() {
+
+		MongoClient mongoClient = null;
+
+		try {
+
+			mongoClient = new MongoClient(host, port);
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return mongoClient;
 
 	}
 	
