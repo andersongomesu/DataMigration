@@ -26,8 +26,8 @@ public class MysqlDataExtractTest {
 
 		MysqlDataExtract mysqlDataExtract = new MysqlDataExtract();
 
-		boolean extractResult = mysqlDataExtract.extractMysqlDataIntoJsonFile(IApplicationConstants.defaultMySqlSchemaName, "customers", 
-				10L, "D:\\Sampath\\MS\\Dissertation\\MySQL\\extract.json");
+		boolean extractResult = mysqlDataExtract.extractMysqlDataIntoJsonFile(IApplicationConstants.defaultMySqlSchemaName, "payments", 
+				2L, "D:\\Habi\\MS\\Git\\MySQL\\extract.json");
 		
 		Assert.assertTrue(extractResult);
 

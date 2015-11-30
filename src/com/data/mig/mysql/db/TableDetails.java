@@ -7,6 +7,9 @@ public class TableDetails {
 	String dataType;
 	String columnKey;
 	
+	String foreignTableAndColumn;
+	String parentTableAndColumn;
+	
 	public String getTableName() {
 		return tableName;
 	}
@@ -32,11 +35,24 @@ public class TableDetails {
 		this.columnKey = columnKey;
 	}
 	
+	public String getForeignTableAndColumn() {
+		return foreignTableAndColumn;
+	}
+	public void setForeignTableAndColumn(String foreignTableAndColumn) {
+		this.foreignTableAndColumn = foreignTableAndColumn;
+	}
+	public String getParentTableAndColumn() {
+		return parentTableAndColumn;
+	}
+	public void setParentTableAndColumn(String parentTableAndColumn) {
+		this.parentTableAndColumn = parentTableAndColumn;
+	}
 	
 	@Override
 	public String toString() {
 		return "TableDetails [tableName=" + tableName + ", columnName=" + columnName + ", dataType=" + dataType
-				+ ", columnKey=" + columnKey + "]";
+				+ ", columnKey=" + columnKey + ", foreignTableAndColumn=" + foreignTableAndColumn
+				+ ", parentTableAndColumn=" + parentTableAndColumn + "]";
 	}
 	
 }

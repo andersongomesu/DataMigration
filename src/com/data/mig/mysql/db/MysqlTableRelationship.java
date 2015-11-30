@@ -101,6 +101,8 @@ public class MysqlTableRelationship {
 				while (rs.next()) {
 					isResultsetHasRecords = true;
 					TableDetails tableDetails = new TableDetails();
+					tableDetails.setForeignTableAndColumn(rs.getString("foreign_table_and_column"));
+					tableDetails.setParentTableAndColumn(rs.getString("references"));
 					tableDetails.setColumnKey(rs.getString("column_key"));
 					tableDetails.setColumnName(rs.getString("foreign_key"));
 					tableDetails.setTableName(rs.getString("foreign_table"));

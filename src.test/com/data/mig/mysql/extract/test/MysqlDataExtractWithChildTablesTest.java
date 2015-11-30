@@ -27,7 +27,7 @@ public class MysqlDataExtractWithChildTablesTest {
 		MysqlDataExtractWithChildTables mysqlDataExtractWithChildTables = new MysqlDataExtractWithChildTables();
 
 		boolean extractResult = mysqlDataExtractWithChildTables.extractMysqlDataIntoJsonFile(IApplicationConstants.defaultMySqlSchemaName, "customers", 
-				10L, "D:\\Sampath\\MS\\Dissertation\\MySQL\\extract.json");
+				2L, "D:\\Habi\\MS\\Git\\MySQL\\extract.json");
 		
 		Assert.assertTrue(extractResult);
 
@@ -35,5 +35,26 @@ public class MysqlDataExtractWithChildTablesTest {
 
 	}
 	
+	@Test
+	public void getMysqlDataExtractWithGivenChildTableTest() throws SQLException {
+		MysqlDatabaseConnect mysqlDatabaseConnect = new MysqlDatabaseConnect();
+
+		Connection conn = mysqlDatabaseConnect.getMySqlDBConnection(
+				IApplicationConstants.defaultMySqlSchemaName,
+				IApplicationConstants.defaultMySqlUserId,
+				IApplicationConstants.defaultMySqlPassword);
+
+		Assert.assertNotNull(conn);
+
+		MysqlDataExtractWithChildTables mysqlDataExtractWithChildTables = new MysqlDataExtractWithChildTables();
+
+		boolean extractResult = mysqlDataExtractWithChildTables.extractMysqlDataIntoJsonFile(IApplicationConstants.defaultMySqlSchemaName, "customers","orders", 
+				2L, "D:\\Habi\\MS\\Git\\MySQL\\customers_orders.json");
+		
+		Assert.assertTrue(extractResult);
+
+		conn.close();
+
+	}
 
 }

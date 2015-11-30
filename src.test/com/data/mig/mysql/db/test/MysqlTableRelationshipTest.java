@@ -79,6 +79,8 @@ public class MysqlTableRelationshipTest {
 		
 		Assert.assertNotNull(tableDetailsList);
 		Assert.assertEquals("List of tables not matching", 2, tableDetailsList.size());
+		
+		System.out.println("Table Details List : " + tableDetailsList.toString());
 
 		conn.close();
 
