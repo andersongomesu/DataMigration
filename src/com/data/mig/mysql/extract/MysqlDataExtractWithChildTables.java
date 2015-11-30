@@ -494,13 +494,17 @@ public class MysqlDataExtractWithChildTables {
 								}
 
 								// Add the child table array into main node
-								((ObjectNode) jsonNode).put(childTableDetails.getTableName(), childArrayNode);
+								//((ObjectNode) jsonNode).put(childTableDetails.getTableName(), childArrayNode);
+								//((ObjectNode) jsonNode).put(parentTableName , childArrayNode);
+								targetObject.put(parentTableName + parentTableResultSet.getRow(), childArrayNode);
+								
 							}
 
 						}
 
 						// Put the node into target object
-						targetObject.put(parentTableName + parentTableResultSet.getRow(), jsonNode);
+						//targetObject.put(parentTableName + parentTableResultSet.getRow(), jsonNode);
+						//targetObject =(ObjectNode)jsonNode;
 
 					}
 					System.out.println("No of records in target object :" + targetObject.size());
