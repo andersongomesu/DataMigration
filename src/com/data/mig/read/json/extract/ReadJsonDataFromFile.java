@@ -3,14 +3,20 @@ package com.data.mig.read.json.extract;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.data.mig.cassandra.utils.CassandraDatabaseUtils;
+import com.data.mig.constants.IApplicationConstants;
 import com.data.mig.mongo.utils.MongoDatabaseUtils;
+import com.data.mig.mysql.db.MysqlDatabaseConnect;
+import com.data.mig.mysql.db.MysqlTableRelationship;
+import com.data.mig.mysql.db.TableDetails;
 import com.mysql.jdbc.StringUtils;
 
 public class ReadJsonDataFromFile {
@@ -36,24 +42,71 @@ public class ReadJsonDataFromFile {
 	}
 
 	
-	public boolean readJsonDataFromFileintoCassandraDatabase(String keyspaceName,String rootColumnFamilyName, String filePath) {
+	public boolean readJsonDataFromFileintoCassandraDatabase(String schemaName,String keySpaceName,String rootColumnFamilyName,String folderPath) {
 
 		boolean loadStatus = false;
-
-		System.out.println("### Start of JSON file read process ###");
-
-		// 1. Read from file
-		Map<String, Object> jsonDataMap = readFile(filePath, rootColumnFamilyName);
-
-		CassandraDatabaseUtils cassandradatabaseUtils = new CassandraDatabaseUtils();
-
-		// 2. Load into Cassandra
 		
-		loadStatus = cassandradatabaseUtils.writeMapIntoCassandraDatabase(keyspaceName, rootColumnFamilyName, jsonDataMap);
-				
-		System.out.println("### End of JSON file read process ###");
+		String childColumnFamilyName  = null;
+		String fileName = null;
+		String filePath= null;
+		
+		System.out.println("### Start of JSON file read process ###");
+		
+		//1. Read & Verify all filenamesfrom Folder
+		 List<TableDetails> childColumnFamilyList = getMysqlTableRelationshipDetails(schemaName,rootColumnFamilyName);
+			for(TableDetails childColumnFamily: childColumnFamilyList) {
+		    childColumnFamilyName  = (String) childColumnFamily.getTableName();
+		
+		    fileName =childColumnFamilyName+"_"+rootColumnFamilyName+".json";
+		    
+			boolean fileFound = verifyFileExists(folderPath,fileName);
+			
+				if(fileFound)
+				{
+					// 1. Read from file
+					filePath = folderPath+"/"+fileName;
+					Map<String, Object> jsonDataMap = readFile(filePath, rootColumnFamilyName);
+					CassandraDatabaseUtils cassandradatabaseUtils = new CassandraDatabaseUtils();
+			
+					// 2. Load into Cassandra
+					loadStatus = cassandradatabaseUtils.writeMapIntoCassandraDatabase(schemaName,keySpaceName, rootColumnFamilyName,childColumnFamilyName, jsonDataMap);
+					System.out.println("### End of JSON file read process ###");
+				}
+			}
 		return loadStatus;
 	}
+	
+	public boolean verifyFileExists(String folderPath,String fileName)
+	{
+		
+		 boolean fileFound =false;
+		
+		 File filePath = new File(folderPath+"/"+fileName);
+		 
+		 if(filePath.exists())
+		 {
+		/* File[] listOfFiles = folder.listFiles();
+		 for (int i = 0; i < listOfFiles.length; i++) {
+	         if (listOfFiles[i].isFile()) {
+			         System.out.println("File " + listOfFiles[i].getName());
+			         if(listOfFiles[i].getName().equalsIgnoreCase(fileName))
+			      } 
+	         else if (listOfFiles[i].isDirectory()) {
+			        System.out.println("Directory " + listOfFiles[i].getName());
+			      }
+		     }*/
+			 fileFound=true;
+			 
+		 }
+		 else if(!filePath.exists())
+		 {
+			 System.out.println("extract file not found "+ filePath);
+		 }
+		 
+	     return fileFound;
+	}
+  
+
 	
 	public Map<String, Object> readFile(String filePath, String rootTableName) {
 
@@ -96,4 +149,17 @@ public class ReadJsonDataFromFile {
 		return jsonMap;
 	}
 
+  private List<TableDetails> getMysqlTableRelationshipDetails(String schemaName, String tableName) {
+		
+		MysqlDatabaseConnect mysqlDatabaseConnect = new MysqlDatabaseConnect();
+
+		Connection conn= mysqlDatabaseConnect.getMySqlDBConnection(schemaName, IApplicationConstants.defaultMySqlUserId,
+				IApplicationConstants.defaultMySqlPassword);
+
+		
+		MysqlTableRelationship mysqlTableRelationship = new MysqlTableRelationship();
+		List<TableDetails> childTableDetailsList = mysqlTableRelationship.getMysqlTableRelationshipDetailsAsObject(conn,
+				IApplicationConstants.defaultMySqlSchemaName, tableName);
+		return childTableDetailsList;
+	}
 }

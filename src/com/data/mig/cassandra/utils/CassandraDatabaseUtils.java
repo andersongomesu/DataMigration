@@ -1,9 +1,16 @@
 package com.data.mig.cassandra.utils;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.json.simple.JSONArray;
@@ -11,88 +18,75 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.data.mig.constants.IApplicationConstants;
 import com.data.mig.db.CassandraDatabaseColumnFamily;
 import com.data.mig.db.CassandraDatabaseConnect;
 import com.data.mig.db.CassandraDatabaseExecute;
+import com.data.mig.mysql.db.MysqlDatabaseConnect;
+import com.data.mig.mysql.db.MysqlTableColumnDetails;
+import com.data.mig.mysql.db.MysqlTableRelationship;
+import com.data.mig.mysql.db.TableDetails;
+import com.data.mig.read.json.extract.ReadJsonDataFromFile;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
-
-
+import java.sql.Connection;
 
 public class CassandraDatabaseUtils {
 
-	public Boolean writeMapIntoCassandraDatabase(String keyspaceName, String rootColumnFamilyName,
-			Map<String, Object> jsonDataMap) {
+	public Boolean writeMapIntoCassandraDatabase(String schemaName, String keySpaceName, String rootColumnFamilyName,
+			String childColumnFamilyName, Map<String, Object> jsonDataMap) {
 
 		System.out.println("### Start of write into Cassandra database process ###");
-		
+
+		boolean createColumnFamilyExecutedOnce = false;
 		CassandraDatabaseConnect cassandraDatabaseConnect = new CassandraDatabaseConnect();
-		CassandraDatabaseColumnFamily cassandraColumnFamily = new CassandraDatabaseColumnFamily();
-
-		
+	
 		Cluster cluster = cassandraDatabaseConnect.getCassandraDBConnection();
-
-		
-		Session dbsession = null;
-
-		try {
-
-			dbsession = cassandraColumnFamily.createCassandraColumnFamily(cluster, keyspaceName, rootColumnFamilyName);
-		} catch (Exception e) {
-			System.out.println(
-					"Error in Cassandra create Column Family in writeMapIntoCassandraDatabase method" + e.getMessage());
-		}
-
-		Boolean writeMapToCassandraDatabaseSuccessFlag = false;
-
-		//MongoCollectionInsert mongoCollectionInsert = null;
+		boolean writeMapToCassandraDatabaseSuccessFlag = false;
 
 		long noOfWritesDone = 0;
 
-		boolean rootcolumnfamilyAlteredSuccessFlag =false;
-		boolean rootcolumnfamilyAlteredOnce=false;
 		if (jsonDataMap != null) {
+			JSONParser parser = new JSONParser();
 
-		
 			for (Map.Entry<String, Object> entrySet : jsonDataMap.entrySet()) {
 				noOfWritesDone++;
-				JSONParser parser = new JSONParser();
-				try {
-					JSONObject json = (JSONObject) parser.parse(entrySet.getValue().toString());
-					Iterator i = json.entrySet().iterator();
-					
-					while (i.hasNext()) {
-					   Map.Entry e = (Map.Entry)i.next();
-					   
-					   if(!rootcolumnfamilyAlteredSuccessFlag && !rootcolumnfamilyAlteredOnce)
-						{
-						  rootcolumnfamilyAlteredSuccessFlag= alterRootCoulmnFamily(json,cluster,keyspaceName,rootColumnFamilyName);
-						  rootcolumnfamilyAlteredOnce = true;
-						}
 
-					   if(e.getValue()!=null )///dataTypeFinder(e.getValue()) != "JSONArray")
-					   {
-						   	   String datatype = dataTypeFinder(e.getValue(),e.getKey().toString()); 
-						   	   System.out.println("key is "+e.getKey()+ "value is "+e.getValue()+"Class is" + e.getValue().getClass());
-					   		   if(datatype.equalsIgnoreCase("JSONArray"))
-							   {
-							    createChildColumnFamily(cluster,keyspaceName, (JSONArray)e.getValue(),e.getKey().toString());
-							   }
-					    }
-					   
-					  insertintoColumnFamily(json,cluster,keyspaceName,rootColumnFamilyName);
-					   
-					   
+				try {
+					JSONArray jsonArray = (JSONArray) parser.parse(entrySet.getValue().toString());
+					if (entrySet.getValue() != null) /// dataTypeFinder(e.getValue())
+														/// != "JSONArray")
+					{
+						String datatype = dataTypeFinder(entrySet.getValue(), entrySet.getKey().toString());
+
+						//System.out.println("key is " + entrySet.getKey() + "value is " + entrySet.getValue()
+						//		+ "Class is" + entrySet.getValue().getClass());
+
+						if (!createColumnFamilyExecutedOnce) {
+							createCassandraDataModel(schemaName, cluster, keySpaceName, jsonArray, rootColumnFamilyName,
+									childColumnFamilyName);
+							createColumnFamilyExecutedOnce = true;
+						}
+						
+						boolean insertIntoCassandraColumnFamilySuccessFlag = insertIntoCassandraColumnFamily(cluster, keySpaceName, jsonArray, rootColumnFamilyName,
+								childColumnFamilyName);
+						if(!insertIntoCassandraColumnFamilySuccessFlag){
+							//System.out.println("insertIntoCassandraColumnFamily is falied for column family  "+childColumnFamilyName + "_By_" + rootColumnFamilyName +" for record   "+jsonObject.toJSONString());
+							writeMapToCassandraDatabaseSuccessFlag = false;	
 					}
-				} catch (ParseException e) {
+
+					} // if
+				} // try
+				catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-	
+
 			}
-		
 			writeMapToCassandraDatabaseSuccessFlag = true;
-		} else {
+		}
+
+		else {
 			writeMapToCassandraDatabaseSuccessFlag = false;
 		}
 
@@ -102,8 +96,8 @@ public class CassandraDatabaseUtils {
 
 		return writeMapToCassandraDatabaseSuccessFlag;
 	}
-	
-	public String dataTypeFinder(Object value,String key) {
+
+	public String dataTypeFinder(Object value, String key) {
 
 		String datatype = "text";
 
@@ -112,12 +106,10 @@ public class CassandraDatabaseUtils {
 		} else if (value instanceof Integer) {
 			datatype = "varint";
 		} else if (value instanceof String) {
-			if(key.equalsIgnoreCase("image"))
-			{
-			 datatype = "blob";
-			}
-			else
-			datatype = "varchar";
+			if (key.equalsIgnoreCase("image")) {
+				datatype = "blob";
+			} else
+				datatype = "varchar";
 		} else if (value instanceof Boolean) {
 			datatype = "boolean";
 		} else if (value instanceof Date) {
@@ -136,176 +128,185 @@ public class CassandraDatabaseUtils {
 			datatype = "list";
 		} else if (value instanceof JSONArray) {
 			datatype = "JSONArray";
-		}
-		else {
+		} else {
 			datatype = value.getClass().toString();
 		}
 
 		return datatype;
 	}
+
+	public boolean createCassandraDataModel(String schemaName,Cluster cluster, String keySpaceName, JSONArray jsonArray,
+			String rootColumnFamilyName, String childColumnFamilyName) {
+		boolean createCassandraDataModelSuccessFlag = false;
 	
-	public boolean alterRootCoulmnFamily(JSONObject json,Cluster cluster, String keyspaceName, String ColumnFamilyName )
-	{
-		 
-		boolean columnfamilyAlteredSuccessFlag =false;
-		String alterTableCommand ="ALTER TABLE " + ColumnFamilyName;
+		JSONObject jsonObject = new JSONObject();
+
+		if (jsonArray.get(0) != null) {
+			jsonObject = (JSONObject) jsonArray.get(0);
+			createCassandraDataModelSuccessFlag=createCassandraColumnFamily(schemaName,cluster, keySpaceName,jsonObject, rootColumnFamilyName, childColumnFamilyName);
+		}
+
+		return createCassandraDataModelSuccessFlag;
+	}
+
+	public boolean createCassandraColumnFamily(String schemaName, Cluster cluster, String keySpaceName,JSONObject jsonObject, 
+			String rootColumnFamilyName, String childColumnFamilyName) {
+		boolean columnfamilyCreateSuccessFlag = false;
+
+		String parentTablePrimaryKey = null;
+		String childTablePrimaryKey = null;
+
+		String columnFamilyName = childColumnFamilyName + "_By_" + rootColumnFamilyName;
+		String createColumnFamilyCommand = "Create TABLE " + columnFamilyName + " (" + columnFamilyName + "_id uuid, ";
+
+		Iterator jsonIterator = jsonObject.entrySet().iterator();
+
+		while (jsonIterator.hasNext()) {
+			Map.Entry e = (Map.Entry) jsonIterator.next();
+
+			if (e.getValue() != null) {
+				String datatype = dataTypeFinder(e.getValue(), e.getKey().toString());
+				if (!datatype.equalsIgnoreCase("JSONArray")) {
+					createColumnFamilyCommand += e.getKey() + " " + dataTypeFinder(e.getValue(), e.getKey().toString())
+							+ ",  ";
+				}
+
+			} else {
+				createColumnFamilyCommand += e.getKey() + " text, ";
+
+			}
+		}
+		try {
+
+			Connection conn = getDatabaseConnection();
+			MysqlTableColumnDetails mysqlTableColumnDetails = new MysqlTableColumnDetails();
+			parentTablePrimaryKey = getPrimayKeyColumnDetails(conn, schemaName,rootColumnFamilyName);
+			childTablePrimaryKey = getPrimayKeyColumnDetails(conn, schemaName,childColumnFamilyName);
+
+		} catch (Exception e) {
+			System.out.println(e.getStackTrace());
+		}
+
+		createColumnFamilyCommand += "PRIMARY KEY (" + parentTablePrimaryKey + ","
+				+ childTablePrimaryKey + "));";
+
+		System.out.println(createColumnFamilyCommand);
+		columnfamilyCreateSuccessFlag =
+		executeQuery(cluster,keySpaceName,createColumnFamilyCommand);
+
+		return columnfamilyCreateSuccessFlag;
+	}
+
+	public boolean insertIntoCassandraColumnFamily(Cluster cluster, String keySpaceName,JSONArray jsonArray,
+			String rootColumnFamilyName, String childColumnFamilyName) {
+
+		boolean insertAllRecordsSuccessFlag = true;
+		String insertKeysCommand = null;
+		String insertValuesCommand = null;
+		String columnFamilyName = childColumnFamilyName + "_By_" + rootColumnFamilyName;
+		Iterator jsonArrayIterator = jsonArray.iterator();
+
+		while (jsonArrayIterator.hasNext()) {
+		boolean insertIntoCassandraColumnFamilySuccessFlag = false;	
 		
-		Iterator i = json.entrySet().iterator();
+		JSONObject jsonObject = (JSONObject) jsonArrayIterator.next();
 		
-		while (i.hasNext()) {
-		   Map.Entry e = (Map.Entry)i.next();
-		   
-			if(e.getValue()!=null )
-			   {
-				   
-			   String datatype = dataTypeFinder(e.getValue(),e.getKey().toString());  
-			   
-			   if(!datatype.equalsIgnoreCase("JSONArray"))
-			   {
-				   alterTableCommand= "ALTER TABLE " + ColumnFamilyName+" ADD " +e.getKey() + " " +dataTypeFinder(e.getValue(),e.getKey().toString())+"; ";
-			   }
-			  
-			   }
-			   else
-			   {
-				   alterTableCommand = "ALTER TABLE " + ColumnFamilyName+" ADD " +e.getKey() + " text; ";
-			   }
-			 
-			   
-			   columnfamilyAlteredSuccessFlag = executeQuery(cluster,keyspaceName,alterTableCommand);
+		insertKeysCommand = "INSERT INTO " + keySpaceName + "." + columnFamilyName + " (" + columnFamilyName
+				+ "_id,";
+		insertValuesCommand = " ) VALUES ( " + UUID.randomUUID() + ", ";
 		
-	        	
+	    System.out.println(jsonObject.toString());
+		
+		Iterator jsonIterator = jsonObject.entrySet().iterator();
+
+		while (jsonIterator.hasNext()) {
+			Map.Entry e = (Map.Entry) jsonIterator.next();
+
+			if (e.getValue() != null) {
+				String datatype = dataTypeFinder(e.getValue(), e.getKey().toString());
+				if (datatype.equalsIgnoreCase("int") || datatype.equalsIgnoreCase("double")
+						|| datatype.equalsIgnoreCase("varint") || datatype.equalsIgnoreCase("float")
+						|| datatype.equalsIgnoreCase("bigint")) {
+					insertKeysCommand += e.getKey() + ",";
+					insertValuesCommand += e.getValue() + ", ";
+				} else if (!datatype.equalsIgnoreCase("JSONArray")) {
+					insertKeysCommand += e.getKey() + ",";
+					insertValuesCommand += "'" + e.getValue() + "', ";
+				}
+
+			} else if (e.getValue() == null) {
+				insertKeysCommand += e.getKey() + ", ";
+				insertValuesCommand += " null, ";
+			}
+
+		}
+
+		String insertIntoCassandraCommand = insertKeysCommand.substring(0, insertKeysCommand.lastIndexOf(',')) + " "
+				+ insertValuesCommand.substring(0, insertValuesCommand.lastIndexOf(',')) + ");";
+		//System.out.println(insertIntoCassandraCommand);
+
+		insertIntoCassandraColumnFamilySuccessFlag = executeQuery(cluster, keySpaceName, insertIntoCassandraCommand);
+		if(!insertIntoCassandraColumnFamilySuccessFlag)
+		{
+			System.out.println("insertIntoCassandraColumnFamily is falied for column family  "+childColumnFamilyName + "_By_" + rootColumnFamilyName +" for record   "+jsonObject.toJSONString());
+			insertAllRecordsSuccessFlag = false;
 		}
 		
-		 
-		return columnfamilyAlteredSuccessFlag;
-	}
-	
-	public boolean insertintoColumnFamily(JSONObject json,Cluster cluster, String keyspaceName, String ColumnFamilyName)
-	{
-		 
-		boolean insertSuccessFlag =false;
-		
-		
-		/* "INSERT INTO simplex.playlists (id, song_id, title, album, artist) " +
-	      "VALUES (" +
-	          "2cc9ccb7-6221-4ccb-8387-f22b6a1b354d," +
-	          "756716f7-2e54-4715-9f00-91dcbea6cf50," +
-	          "'La Petite Tonkinoise'," +
-	          "'Bye Bye Blackbird'," +
-	          "'Joséphine Baker'" +
-	          ");"*/
-		String insertKeysCommand= "INSERT INTO "+keyspaceName+"."+ColumnFamilyName +" ("+ColumnFamilyName+"_id,";
-		String insertValuesCommand =" ) VALUES ( "+UUID.randomUUID()+", ";
-		Iterator i = json.entrySet().iterator();
-		
-		while (i.hasNext()) {
-		   Map.Entry e = (Map.Entry)i.next();
-	
-		   if(e.getValue()!=null )
-		   {
-			   	   String datatype = dataTypeFinder(e.getValue(),e.getKey().toString()); 
-			   	   if(datatype.equalsIgnoreCase("int") ||
-		   				datatype.equalsIgnoreCase("double") ||
-		   				datatype.equalsIgnoreCase("varint") ||
-		   				datatype.equalsIgnoreCase("float") ||
-		   				datatype.equalsIgnoreCase("bigint") )
-		   		   {
-		   			insertKeysCommand+= e.getKey()+",";   
-		   			insertValuesCommand+= e.getValue()+", ";
-		   		   }
-			   	   else if(!datatype.equalsIgnoreCase("JSONArray"))
-				   {
-		   			insertKeysCommand+= e.getKey()+",";   
-		   			insertValuesCommand+= "'"+e.getValue()+"', ";
-				   }
-		   		   
-		    }
-		   else if(e.getValue()==null )
-	       {
-			   insertKeysCommand+= e.getKey()+", ";
-			   insertValuesCommand+= " null, ";
-	        }
-	        	
 		}
-		
-		   String insertCommand = insertKeysCommand.substring(0, insertKeysCommand.lastIndexOf(','))+" "+insertValuesCommand.substring(0, insertValuesCommand.lastIndexOf(','))+");";
-		  // System.out.println(insertCommand);
-		   
-		   insertSuccessFlag = executeQuery(cluster,keyspaceName,insertCommand);
-		
-		return insertSuccessFlag;
+		return insertAllRecordsSuccessFlag;
 	}
-	
-	public boolean executeQuery(Cluster cluster,String keyspaceName,String query)
-	{
+
+	public boolean executeQuery(Cluster cluster, String keyspaceName, String query) {
 		boolean cassandraQueryExecuteSuccessFlag = false;
 		CassandraDatabaseExecute cassandraQueryExecute = new CassandraDatabaseExecute();
-		cassandraQueryExecuteSuccessFlag= cassandraQueryExecute.executeCassandraQuery(cluster, keyspaceName, query);
-		
+		cassandraQueryExecuteSuccessFlag = cassandraQueryExecute.executeCassandraQuery(cluster, keyspaceName, query);
+
 		return cassandraQueryExecuteSuccessFlag;
 	}
-	
-	
-	public void createChildColumnFamily(Cluster cluster,String keyspaceName,JSONArray JSONArrayValue,String childColumFamilyName)
-	{
-		try {
-			
-		   boolean childcolumnfamilyAlteredSuccessFlag =false;
-		   boolean childcolumnfamilyAlteredOnce=false;
-			
-		   CassandraDatabaseColumnFamily cassandraColumnFamily = new CassandraDatabaseColumnFamily(); 
-		   cassandraColumnFamily.createCassandraColumnFamily(cluster, keyspaceName, childColumFamilyName);
-	   
-		   Iterator i = JSONArrayValue.iterator();
-	       while(i.hasNext())
-	       {
-	            	JSONObject rootJSONObj = (JSONObject)i.next();
-	                //String finalValue = (String)jsnObj.get("customerNumber");
-	            	Iterator ji = rootJSONObj.entrySet().iterator();
-	            	while (ji.hasNext()) {
-	            	   Map.Entry e = (Map.Entry)ji.next();
-	            	   //System.out.println("Key: " + e.getKey()+" Value: " + e.getValue());
-	            	
-	         	   if(!childcolumnfamilyAlteredSuccessFlag && !childcolumnfamilyAlteredOnce)
-					{
-	         		   childcolumnfamilyAlteredSuccessFlag= alterRootCoulmnFamily(rootJSONObj,cluster,keyspaceName,childColumFamilyName);
-					   childcolumnfamilyAlteredOnce = true;
-					}
 
-				   if(e.getValue()!=null )///dataTypeFinder(e.getValue()) != "JSONArray")
-				   {
-					   	   String datatype = dataTypeFinder(e.getValue(),e.getKey().toString());  
-					   	   //System.out.println("Key: " + e.getKey()+" Value: " + e.getValue()+datatype+e.getValue().getClass().toString());
-				   		   if(datatype.equalsIgnoreCase("JSONArray"))
-						   {
-						    createChildColumnFamily(cluster,keyspaceName, (JSONArray)e.getValue(),e.getKey().toString());
-						   }
-				    }
-				   
-				   insertintoColumnFamily(rootJSONObj,cluster,keyspaceName,childColumFamilyName);
-	            	}
-	            
-	        }
-		}
-	        	 catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+	private Connection getDatabaseConnection() {
+
+		MysqlDatabaseConnect mysqlDatabaseConnect = new MysqlDatabaseConnect();
+
+		return mysqlDatabaseConnect.getMySqlDBConnection(IApplicationConstants.defaultMySqlSchemaName,
+				IApplicationConstants.defaultMySqlUserId, IApplicationConstants.defaultMySqlPassword);
+
 	}
-	
-	
 
-/*public static void main(String[] args) throws IOException, Exception {
-		
+	private String getPrimayKeyColumnDetails(Connection conn, String schemaName, String tableName) {
+
+		String primaryKeyName = null;
+		MysqlTableColumnDetails mysqlTableColumnDetails = new MysqlTableColumnDetails();
+
+		Map<String, String> primaryKeyMap = mysqlTableColumnDetails.getMysqlTablePrimaryKey(conn,
+				schemaName, tableName);
+
+		Iterator primaryKeyiterator = primaryKeyMap.keySet().iterator();
+
+		while (primaryKeyiterator.hasNext()) {
+			primaryKeyName = (String) primaryKeyiterator.next();
+		}
+
+		return primaryKeyName;
+	}
+
+	private List<TableDetails> getMysqlTableRelationshipDetails(Connection conn, String tableName) {
+		MysqlTableRelationship mysqlTableRelationship = new MysqlTableRelationship();
+		List<TableDetails> childTableDetailsList = mysqlTableRelationship.getMysqlTableRelationshipDetailsAsObject(conn,
+				IApplicationConstants.defaultMySqlSchemaName, tableName);
+		return childTableDetailsList;
+	}
+
+	public static void main(String[] args) throws IOException, Exception {
+
 		ReadJsonDataFromFile readJsonDataFromFile = new ReadJsonDataFromFile();
 		Map<String, Object> jsonMap = new LinkedHashMap<String, Object>();
-		jsonMap= readJsonDataFromFile.readFile("D:\\Habi\\MS\\Git\\MySQL\\extract.json", "customers");
-		
+		jsonMap = readJsonDataFromFile.readFile("D:\\Habi\\MS\\Git\\MySQL\\customers_orders.json", "customers");
+
 		CassandraDatabaseUtils cassandrautils = new CassandraDatabaseUtils();
-		
-		cassandrautils.writeMapIntoCassandraDatabase("mykeyspace", "customers", jsonMap);
-	
-	}*/
+
+		cassandrautils.writeMapIntoCassandraDatabase(IApplicationConstants.defaultMySqlSchemaName,"mykeyspace", "customers", "orders", jsonMap);
+
+	}
 
 }

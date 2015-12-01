@@ -43,7 +43,7 @@ public interface IApplicationConstants {
 			"WHERE table_schema = ? " +
 			"and table_name = ? ";	
 
-	String retriveMySqlPrimaryDetails = "select  column_name " +
+	String retriveMySqlPrimaryDetails = "select  column_name,data_type " +
 			"FROM information_schema.COLUMNS " +
 			"WHERE table_schema = ? " +
 			"and table_name = ? " +

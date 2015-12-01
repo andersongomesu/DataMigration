@@ -16,9 +16,12 @@ public class ReadJsonDataFromFileToCassandraTest {
 
 		ReadJsonDataFromFile readJsonDataFromFile = new ReadJsonDataFromFile();
 
-		boolean fileReadSuccess = readJsonDataFromFile.readJsonDataFromFileintoCassandraDatabase("mykeyspace",
-				"customers", "D:\\Sampath\\MS\\Dissertation\\MySQL\\extract.json");
+		boolean fileReadSuccess = readJsonDataFromFile.readJsonDataFromFileintoCassandraDatabase("classicmodels","mykeyspace",
+				"customers", "D:\\Habi\\MS\\Git\\MySQL");
 
+		/*boolean fileReadSuccess = readJsonDataFromFile.readJsonDataFromFileintoCassandraDatabase("classicmodels","mykeyspace",
+				"customers", "D:\\Sampath\\MS\\Dissertation\\MySQL\\");*/
+		
 		Assert.assertTrue(fileReadSuccess);
 
 	}

@@ -13,28 +13,7 @@ import junit.framework.Assert;
 
 @SuppressWarnings("deprecation")
 public class MysqlDataExtractWithChildTablesTest {
-	@Test
-	public void getMysqlDataExtractTest() throws SQLException {
-		MysqlDatabaseConnect mysqlDatabaseConnect = new MysqlDatabaseConnect();
-
-		Connection conn = mysqlDatabaseConnect.getMySqlDBConnection(
-				IApplicationConstants.defaultMySqlSchemaName,
-				IApplicationConstants.defaultMySqlUserId,
-				IApplicationConstants.defaultMySqlPassword);
-
-		Assert.assertNotNull(conn);
-
-		MysqlDataExtractWithChildTables mysqlDataExtractWithChildTables = new MysqlDataExtractWithChildTables();
-
-		boolean extractResult = mysqlDataExtractWithChildTables.extractMysqlDataIntoJsonFile(IApplicationConstants.defaultMySqlSchemaName, "customers", 
-				2L, "D:\\Habi\\MS\\Git\\MySQL\\extract.json");
 		
-		Assert.assertTrue(extractResult);
-
-		conn.close();
-
-	}
-	
 	@Test
 	public void getMysqlDataExtractWithGivenChildTableTest() throws SQLException {
 		MysqlDatabaseConnect mysqlDatabaseConnect = new MysqlDatabaseConnect();
@@ -49,9 +28,24 @@ public class MysqlDataExtractWithChildTablesTest {
 		MysqlDataExtractWithChildTables mysqlDataExtractWithChildTables = new MysqlDataExtractWithChildTables();
 
 		boolean extractResult = mysqlDataExtractWithChildTables.extractMysqlDataIntoJsonFile(IApplicationConstants.defaultMySqlSchemaName, "customers","orders", 
-				2L, "D:\\Habi\\MS\\Git\\MySQL\\customers_orders.json");
+				5L, "D:\\Habi\\MS\\Git\\MySQL\\orders_customers.json");
 		
 		Assert.assertTrue(extractResult);
+		
+		extractResult = mysqlDataExtractWithChildTables.extractMysqlDataIntoJsonFile(IApplicationConstants.defaultMySqlSchemaName, "customers","payments", 
+				5L, "D:\\Habi\\MS\\Git\\MySQL\\payments_customers.json");
+		
+		Assert.assertTrue(extractResult);
+		
+		/*boolean extractResult = mysqlDataExtractWithChildTables.extractMysqlDataIntoJsonFile(IApplicationConstants.defaultMySqlSchemaName, "customers","orders", 
+				5L, "D:\\Sampath\\MS\\Dissertation\\MySQL\\orders_customers.json");
+		
+		Assert.assertTrue(extractResult);
+		
+		extractResult = mysqlDataExtractWithChildTables.extractMysqlDataIntoJsonFile(IApplicationConstants.defaultMySqlSchemaName, "customers","payments", 
+				5L, "D:\\Sampath\\MS\\Dissertation\\MySQL\\payments_customers.json");
+		
+		Assert.assertTrue(extractResult);*/
 
 		conn.close();
 
