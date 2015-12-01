@@ -42,40 +42,57 @@
 	<!-- /.container-fluid -->
 </nav>
 
-<form method="POST" name="dmhomeForm" >
+<form:form method="POST" name="onlineLoadForm" action="/DataMigration/dm/submitOnlineLoad">
 	<h4>
 		<span class="label label-default">Source Database :</span>
 	</h4>
 	<div class="radio">
-		<input type="radio" name="sourceDatabase" value="MySQL" />MySQL 
-		<input type="radio"
-					name="sourceDatabase" value="Oracle" />Oracle
+		<form:radiobutton path="sourceDatabase" label="MySQL" name="sourceDatabase" value="MySQL" />
+		<form:radiobutton path="sourceDatabase" label="Oracle" name="sourceDatabase" value="Oracle" />
 	</div>	
-	<h4>
-		<span class="label label-default">Target Database :</span>
-	</h4>
-	<div class="radio">
-		<input type="radio" name="targetDatabase" value="Mongo" />Mongo 
-		<input type="radio"
-					name="targetDatabase" value="Cassandra" />Cassandra
-	</div>
 	<h4>
 		<span class="label label-default">MySQL Schemas :</span>
 	</h4>
 	
 	<div >
-		<form:select path="schemaDetailsList" items="${schemaDetailsList}" />
+		<form:select path="sourceSchema" items="${schemaDetailsList}" />
 	</div>
 	<h4>
 		<span class="label label-default">Table List :</span>
 	</h4>	
 	<div >
-		<form:select path="tableDetailsList" items="${tableDetailsList}" />
+		<form:select path="sourceTableName" items="${tableNameList}" />
 	</div>
+	<h4>
+		<span class="label label-default">Target Database :</span>
+	</h4>
+	<div class="radio">
+		<form:radiobutton path="targetDatabase" label="Mongo" name="targetDatabase" value="Mongo" />
+		<form:radiobutton path="targetDatabase" label="Cassandra" name="targetDatabase" value="Cassandra" />
+	</div>
+	<h4>
+		<span class="label label-default">Target Collection or Column Family Name :</span>
+	</h4>
+	<div >
+		<form:input path="targetCollectionOrColumnFamilyName" />
+	</div>		
+	<h4>
+		<span class="label label-default">No of Records to be Extracted :</span>
+	</h4>
+	<div >
+		<form:input path="noOfRecordsToBeExtracted" />
+	</div>
+	<h4>
+		<span class="label label-default">Include Child Table(s) :</span>
+	</h4>
+	<div class="radio">
+		<form:radiobutton path="childTableExtractRequired" label="Yes" name="childTableExtractRequired" value="true" />
+		<form:radiobutton path="childTableExtractRequired" label="No" name="childTableExtractRequired" value="false" />
+	</div>			
 	<br>
 	<div >
-		<input type="submit" />
+		<input type="submit" value="Migrate the data" />
 	</div>
 	
-</form>
+</form:form>
 </html>

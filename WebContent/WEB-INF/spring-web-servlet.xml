@@ -10,6 +10,7 @@
         http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<context:component-scan base-package="com.data.mig.mvc.controller" />
+	<context:component-scan base-package="com.data.mig.mvc.forms" />
 
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver">

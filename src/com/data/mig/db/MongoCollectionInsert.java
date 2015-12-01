@@ -49,7 +49,7 @@ public class MongoCollectionInsert {
 
 		} catch (MongoCommandException me) {
 			me.printStackTrace();
-		}
+		} 
 
 		Boolean writeAcked = writeResult.wasAcknowledged();
 
