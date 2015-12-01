@@ -42,17 +42,22 @@
 	<!-- /.container-fluid -->
 </nav>
 
-<form role="form" >
+<form method="POST" name="dmhomeForm" >
 	<h4>
-		<span class="label label-default">Migration type :</span>
+		<span class="label label-default">Source Database :</span>
 	</h4>
 	<div class="radio">
-		<label><input type="radio" name="optradio" value="mtom">MySQL
-			to Mongo</label>
-	</div>
+		<input type="radio" name="sourceDatabase" value="MySQL" />MySQL 
+		<input type="radio"
+					name="sourceDatabase" value="Oracle" />Oracle
+	</div>	
+	<h4>
+		<span class="label label-default">Target Database :</span>
+	</h4>
 	<div class="radio">
-		<label><input type="radio" name="optradio" value="mtoc">MySQL
-			to Cassandra</label>
+		<input type="radio" name="targetDatabase" value="Mongo" />Mongo 
+		<input type="radio"
+					name="targetDatabase" value="Cassandra" />Cassandra
 	</div>
 	<h4>
 		<span class="label label-default">MySQL Schemas :</span>
@@ -61,5 +66,16 @@
 	<div >
 		<form:select path="schemaDetailsList" items="${schemaDetailsList}" />
 	</div>
+	<h4>
+		<span class="label label-default">Table List :</span>
+	</h4>	
+	<div >
+		<form:select path="tableDetailsList" items="${tableDetailsList}" />
+	</div>
+	<br>
+	<div >
+		<input type="submit" />
+	</div>
+	
 </form>
 </html>

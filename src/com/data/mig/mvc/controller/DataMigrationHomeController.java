@@ -16,7 +16,6 @@ import com.data.mig.mysql.db.MysqlSchemaDetails;
 public class DataMigrationHomeController {
 	
 	
-	
 	@RequestMapping(path="/home", method = RequestMethod.GET)
 	public ModelAndView home() {
 
@@ -32,11 +31,11 @@ public class DataMigrationHomeController {
 		List<String> schemaDetailsList = new ArrayList<String> ();
 		
 		schemaDetailsList.add("classicmodels");
-		schemaDetailsList.add("test");
+		//schemaDetailsList.add("test");
 		
 		model.addObject("schemaDetailsList", schemaDetailsList);
 		
-		model.addObject("tableDetails", tableDetailsList);
+		model.addObject("tableDetailsList", tableDetailsList);
 		model.setViewName("dmhome");
 		model.addObject("msg", "welcome");
 
