@@ -44,16 +44,41 @@ public class DataMigrationHomeController {
 	}
 
 	@RequestMapping(path = "/submitOnlineLoad", method = RequestMethod.POST)
-	public String addStudent(@ModelAttribute("SpringWeb") OnlineLoadForm onlineLoadForm, ModelMap model) {
+	public ModelAndView loadOnline(@ModelAttribute("SpringWeb") OnlineLoadForm onlineLoadForm, ModelMap model) {
 
 		System.out.println("Source database :" + onlineLoadForm.getSourceDatabase());
 		MysqlToMongoOnlineLoad mysqlToMongoOnlineLoad = new MysqlToMongoOnlineLoad();
 
-		mysqlToMongoOnlineLoad.loadDataFromMysqlToMongo(onlineLoadForm.getSourceSchema(),
+		Boolean successFlag = mysqlToMongoOnlineLoad.loadDataFromMysqlToMongo(onlineLoadForm.getSourceSchema(),
 				onlineLoadForm.getSourceTableName(), onlineLoadForm.getTargetDatabase(),
 				onlineLoadForm.getTargetCollectionOrColumnFamilyName(), onlineLoadForm.getNoOfRecordsToBeExtracted(),
 				Boolean.valueOf(onlineLoadForm.getChildTableExtractRequired()));
-		return "result";
+		
+		
+		if(successFlag) {
+			onlineLoadForm.setMessage(IApplicationConstants.onlineLoadSuccessMessage);
+			ModelAndView modelAndView = new ModelAndView("success", "command", onlineLoadForm);
+			modelAndView.addObject("onlineLoadForm", onlineLoadForm);
+			return modelAndView;
+		} else {
+			onlineLoadForm.setMessage(IApplicationConstants.onlineLoadFailureMessage);
+			return new ModelAndView("failure", "command", onlineLoadForm);
+		}
 	}
+	
+	@RequestMapping(path = "/success", method = RequestMethod.POST)
+	public ModelAndView onlineLoadSuccess (@ModelAttribute("SpringWeb") OnlineLoadForm onlineLoadForm, ModelMap model) {
+		
+		
+		
+		return new ModelAndView("dmhome", "command", onlineLoadForm);
+	}
+	
+	@RequestMapping(path = "/failure", method = RequestMethod.POST)
+	public ModelAndView onlineLoadFailure (@ModelAttribute("SpringWeb") OnlineLoadForm onlineLoadForm, ModelMap model) {
+
+		
+		return new ModelAndView("dmhome", "command", onlineLoadForm);
+	}		
 
 }

@@ -9,6 +9,17 @@ public class OnlineLoadForm {
 	private Long noOfRecordsToBeExtracted;
 	private String childTableExtractRequired;
 	private String targetCollectionOrColumnFamilyName;
+	private String message;
+	
+	
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 	public String getTargetCollectionOrColumnFamilyName() {
 		return targetCollectionOrColumnFamilyName;
 	}
@@ -75,7 +86,7 @@ public class OnlineLoadForm {
 				+ ", sourceSchema=" + sourceSchema + ", sourceTableName=" + sourceTableName
 				+ ", noOfRecordsToBeExtracted=" + noOfRecordsToBeExtracted + ", childTableExtractRequired="
 				+ childTableExtractRequired + ", targetCollectionOrColumnFamilyName="
-				+ targetCollectionOrColumnFamilyName + ", filePath=" + filePath + "]";
+				+ targetCollectionOrColumnFamilyName + ", message=" + message + ", filePath=" + filePath + "]";
 	}	
 
 }
