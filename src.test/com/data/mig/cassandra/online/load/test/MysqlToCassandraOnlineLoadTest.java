@@ -14,20 +14,42 @@ public class MysqlToCassandraOnlineLoadTest {
 
 		// Extract including the child tables
 		Boolean loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
-				IApplicationConstants.defaultMySqlSchemaName, "customers", "mykeyspace", "customers", 10L, true);
-
+				IApplicationConstants.defaultMySqlSchemaName, "customers", "mykeyspace", "customers", 2L, true); //payments, order
+		
+		/*Boolean loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
+				IApplicationConstants.defaultMySqlSchemaName, "employees", "mykeyspace", "employees", 2L, true); // customers
+*/
 		Assert.isTrue(loadStatus);
 	}
 
-	@Test
+	/*@Test
 	public void loadDataFromMysqlToCassandraWithoutChildTablesTest() {
 		MysqlToCassandraOnlineLoad mysqlToCassandraOnlineLoad = new MysqlToCassandraOnlineLoad();
 
 		// Extract without the child tables
 		Boolean loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
+				IApplicationConstants.defaultMySqlSchemaName, "orders", "mykeyspace", "orders", 10L, false);
+		
+		loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
+				IApplicationConstants.defaultMySqlSchemaName, "office", "mykeyspace", "office", 10L, false);
+		
+		loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
+				IApplicationConstants.defaultMySqlSchemaName, "employees", "mykeyspace", "employees", 10L, false);
+		
+		loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
 				IApplicationConstants.defaultMySqlSchemaName, "customers", "mykeyspace", "customers", 10L, false);
+		
+		loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
+				IApplicationConstants.defaultMySqlSchemaName, "products", "mykeyspace", "products", 10L, false);
+		
+		loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
+				IApplicationConstants.defaultMySqlSchemaName, "productlines", "mykeyspace", "productlines", 10L, false);
+		
+		loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
+				IApplicationConstants.defaultMySqlSchemaName, "orderdetails", "mykeyspace", "orderdetails", 10L, false);
+
 
 		Assert.isTrue(loadStatus);
-	}
+	}*/
 
 }

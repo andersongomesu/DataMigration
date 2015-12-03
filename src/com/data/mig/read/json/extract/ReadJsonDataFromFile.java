@@ -42,7 +42,7 @@ public class ReadJsonDataFromFile {
 	}
 
 	
-	public boolean readJsonDataFromFileintoCassandraDatabase(String schemaName,String keySpaceName,String rootColumnFamilyName,String folderPath) {
+	public boolean readJsonDataFromFileintoCassandraDatabase(String schemaName,String tableName, String keySpaceName,String rootColumnFamilyName,String folderPath,boolean isChildColumnFamilyRequired) {
 
 		boolean loadStatus = false;
 		
@@ -51,6 +51,9 @@ public class ReadJsonDataFromFile {
 		String filePath= null;
 		
 		System.out.println("### Start of JSON file read process ###");
+		
+		if(isChildColumnFamilyRequired)
+		{
 		
 		//1. Read & Verify all filenamesfrom Folder
 		 List<TableDetails> childColumnFamilyList = getMysqlTableRelationshipDetails(schemaName,rootColumnFamilyName);
@@ -69,10 +72,21 @@ public class ReadJsonDataFromFile {
 					CassandraDatabaseUtils cassandradatabaseUtils = new CassandraDatabaseUtils();
 			
 					// 2. Load into Cassandra
-					loadStatus = cassandradatabaseUtils.writeMapIntoCassandraDatabase(schemaName,keySpaceName, rootColumnFamilyName,childColumnFamilyName, jsonDataMap);
+					loadStatus = cassandradatabaseUtils.writeMapIntoCassandraDatabase(schemaName,tableName,keySpaceName, rootColumnFamilyName,childColumnFamilyName, jsonDataMap);
 					System.out.println("### End of JSON file read process ###");
 				}
 			}
+		}
+		else
+		{
+			// 1. Read from file
+			filePath = folderPath;
+			Map<String, Object> jsonDataMap = readFile(filePath, rootColumnFamilyName);
+			CassandraDatabaseUtils cassandradatabaseUtils = new CassandraDatabaseUtils();
+
+			// 2. Load into Mongo collection
+			loadStatus = cassandradatabaseUtils.writeMapIntoCassandraDatabase(schemaName,tableName,keySpaceName, rootColumnFamilyName,null, jsonDataMap);
+		}
 		return loadStatus;
 	}
 	

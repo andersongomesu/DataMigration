@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.data.mig.cassandra.utils.CassandraDatabaseUtils;
 import com.data.mig.constants.IApplicationConstants;
+import com.data.mig.mongo.utils.MongoDatabaseUtils;
 import com.data.mig.mysql.db.MysqlDatabaseConnect;
 import com.data.mig.mysql.db.MysqlTableRelationship;
 import com.data.mig.mysql.db.TableDetails;
@@ -34,26 +35,41 @@ public class MysqlToCassandraOnlineLoad {
 			String targetColumnFamilyName, Long numberOfRecordToBeExtracted,boolean isChildColumnFamilyRequired) {
 
 		Boolean dataLoadStatus = false;
-
+		CassandraDatabaseUtils cassandraDatabaseUtils = new CassandraDatabaseUtils();
 		MysqlDataExtractWithChildTables mysqlDataExtractWithChildTables = null;
 		MysqlDataExtract mysqlDataExtract = null;
 		Map<String, Object> dataExtractMap = null;
-		List<TableDetails> childTableDetailsList = getMysqlTableRelationshipDetails(sourceSchemaName,sourceTableName);
-		for(TableDetails childTableDetails : childTableDetailsList) {
-			   String childTableName  = (String) childTableDetails.getTableName();
-	
-				try {
 		
-					mysqlDataExtractWithChildTables = new MysqlDataExtractWithChildTables();
-					dataExtractMap = mysqlDataExtractWithChildTables.extractWithGivenChildMysqlDataIntoObject(sourceSchemaName, sourceTableName, childTableName, numberOfRecordToBeExtracted);
-		
-					CassandraDatabaseUtils cassandraDatabaseUtils = new CassandraDatabaseUtils();
-					dataLoadStatus = cassandraDatabaseUtils.writeMapIntoCassandraDatabase(sourceSchemaName,targetKeySpaceName, targetColumnFamilyName,childTableName,dataExtractMap);
+		try {
 
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			if (isChildColumnFamilyRequired) {
+				List<TableDetails> childTableDetailsList = getMysqlTableRelationshipDetails(sourceSchemaName,sourceTableName);
+				for(TableDetails childTableDetails : childTableDetailsList) {
+					   String childTableName  = (String) childTableDetails.getTableName();
+			           System.out.println("In loadDataFromMysqlToCassandra Child Table Name :"+childTableName);
+						try {
+				
+							mysqlDataExtractWithChildTables = new MysqlDataExtractWithChildTables();
+							dataExtractMap = mysqlDataExtractWithChildTables.extractWithGivenChildMysqlDataIntoObject(sourceSchemaName, sourceTableName, childTableName, numberOfRecordToBeExtracted);
+							dataLoadStatus = cassandraDatabaseUtils.writeMapIntoCassandraDatabase(sourceSchemaName,sourceTableName,targetKeySpaceName, targetColumnFamilyName,childTableName,dataExtractMap);
+
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				
+			}
+			}else {
+				mysqlDataExtract = new MysqlDataExtract();
+				dataExtractMap = mysqlDataExtract.extractMysqlDataIntoObject(sourceSchemaName,sourceTableName, numberOfRecordToBeExtracted);	
+				dataLoadStatus = cassandraDatabaseUtils.writeMapIntoCassandraDatabase(sourceSchemaName,sourceTableName,targetKeySpaceName, targetColumnFamilyName,null,dataExtractMap);
+			}
+
+		
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return dataLoadStatus;
 
