@@ -64,9 +64,9 @@ function submitForm(invokeParamVal) {
 				</a>
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
-						<li class="active"><a href="#">Online Load</a></li>
+						<li><a href="#" onClick="submitForm('home')">Online Load</a></li>
 						<li class="divider"></li>
-						<li><a href="#" onClick="submitForm('batchHome')">Batch Load</a></li>
+						<li class="active"><a href="#" >Batch Load</a></li>
 					</ul>
 				</div>
 			</div>
@@ -201,12 +201,27 @@ function submitForm(invokeParamVal) {
 					</div>
 				</div>
 			</div>
+			<div class="row">
+				<div class="form-group">
+					<div class="col-xs-6 col-sm-4">
+						<h4>
+							<span class="label label-default">File Path :</span>
+						</h4>
+					</div>
+					<div class="col-xs-6 col-sm-4">
+						<h4>
+
+							<form:input path="filePath" />
+						</h4>
+					</div>
+				</div>
+			</div>			
 			<br>
 			<div class="row">
 				<div class="form-group">
 					<div class="col-xs-6 col-sm-4"></div>
 					<div class="col-xs-6 col-sm-4">
-						<input class="btn btn-success" type="submit" onclick="submitForm('submitOnlineLoad')"
+						<input class="btn btn-success" type="submit" onclick="submitForm('submitBatchLoad')"
 							value="Migrate the data">
 					</div>
 				</div>

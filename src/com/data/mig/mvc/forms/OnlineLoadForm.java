@@ -10,8 +10,27 @@ public class OnlineLoadForm {
 	private String childTableExtractRequired;
 	private String targetCollectionOrColumnFamilyName;
 	private String message;
+	private String pageName;
+	private String pageAction;
+	private String filePath;
 	
 	
+	public String getPageAction() {
+		return pageAction;
+	}
+
+	public void setPageAction(String pageAction) {
+		this.pageAction = pageAction;
+	}
+
+	public String getPageName() {
+		return pageName;
+	}
+
+	public void setPageName(String pageName) {
+		this.pageName = pageName;
+	}
+
 	public String getMessage() {
 		return message;
 	}
@@ -28,9 +47,6 @@ public class OnlineLoadForm {
 		this.targetCollectionOrColumnFamilyName = targetCollectionOrColumnFamilyName;
 	}
 
-	private String filePath;
-	
-	
 	public String getFilePath() {
 		return filePath;
 	}
@@ -86,7 +102,8 @@ public class OnlineLoadForm {
 				+ ", sourceSchema=" + sourceSchema + ", sourceTableName=" + sourceTableName
 				+ ", noOfRecordsToBeExtracted=" + noOfRecordsToBeExtracted + ", childTableExtractRequired="
 				+ childTableExtractRequired + ", targetCollectionOrColumnFamilyName="
-				+ targetCollectionOrColumnFamilyName + ", message=" + message + ", filePath=" + filePath + "]";
+				+ targetCollectionOrColumnFamilyName + ", message=" + message + ", pageName=" + pageName
+				+ ", pageAction=" + pageAction + ", filePath=" + filePath + "]";
 	}	
 
 }

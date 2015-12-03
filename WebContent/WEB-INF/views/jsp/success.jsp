@@ -7,49 +7,95 @@
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <title>Data Migration Tool</title>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <!-- Bootstrap -->
-<link href="<%=request.getServletPath()%>/WebContent/resources/css/bootstrap.min.css" rel="stylesheet">
-<link href="<%=request.getContextPath()%>/WebContent/resources/css/bootstrap.min.css" rel="stylesheet">
-<script src="<%=request.getContextPath()%>/WebContent/resources/js/jquery.min.js"></script>
-<script src="<%=request.getContextPath()%>/WebContent/resources/js/bootstrap.min.js"></script>
-<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-</head>
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"
+	rel="stylesheet">
 
-<nav class="navbar navbar-default">
-	<div class="container-fluid">
-		<!-- Brand and toggle get grouped for better mobile display -->
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed"
-				data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-				aria-expanded="false">
-				<span class="sr-only">Toggle navigation</span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span> <span
-					class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="#">Data Migration</a>
+<script type="text/javascript">
+	function submitForm(invokeParamVal) {
+
+		$('#pageName').attr('name', invokeParamVal);
+
+		var urlContext = "/DataMigration/dm/";
+
+		// submit the form.
+		$('#command').attr('action', urlContext + invokeParamVal).submit();
+
+	}
+</script>
+</head>
+<body>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script
+		src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+	<header class="masthead">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6">
+					<h1>
+						<span class="page-header"
+							style="color: rgb(0, 0, 204); font-family: 'Times New Roman', Times, serif;">Data
+							Migration Tool</span>
+					</h1>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<!-- Begin Navbar -->
+	<div id="nav">
+		<div class="navbar navbar-default navbar-static">
+			<div class="container">
+				<!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+				<a class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse"> <span
+					class="glyphicon glyphicon-bar"></span> <span
+					class="glyphicon glyphicon-bar"></span> <span
+					class="glyphicon glyphicon-bar"></span>
+				</a>
+				<div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="#">Online Load</a></li>
+						<li class="divider"></li>
+						<li><a href="#" onClick="submitForm('batchHome')">Batch
+								Load</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /.navbar -->
+	</div>
+	<form:form method="GET" name="successForm"
+		action="/DataMigration/dm/home">
+
+		<div class="container">
+			<div class="row">
+				<div class="form-group">
+					<div class="col-xs-6 col-sm-4">
+						<h4>
+							<span class="label label-success">${onlineLoadForm.message}</span>
+						</h4>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="form-group">
+					<div class="col-xs-6 col-sm-4">
+						<input type="submit" class="btn btn-success" value="Goto Home" />
+					</div>
+				</div>
+			</div>
 		</div>
 
-	</div>
-
-	<!-- /.container-fluid -->
-</nav>
-
-<form:form method="GET" name="successForm" action="/DataMigration/dm/home">
-	<h1><span class="label label-success">fdjvgdfkgkf</span></h1>
-	<h4>
-		<span class="label label-success">${onlineLoadForm.message}</span>
-	</h4>
-	<div >
-		<input type="submit" value="Goto Home" />
-	</div>
-	
-</form:form>
+	</form:form>
 </html>
