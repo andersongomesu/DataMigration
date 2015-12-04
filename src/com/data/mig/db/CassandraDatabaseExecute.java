@@ -2,12 +2,13 @@ package com.data.mig.db;
 
 
 import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.Session;
 import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Session;
 
 public class CassandraDatabaseExecute {
 
 	
+	@SuppressWarnings("unused")
 	public boolean executeCassandraQuery(Cluster dbcluster, String keyspaceName,String query) {
 
 		Session dbsession = null;

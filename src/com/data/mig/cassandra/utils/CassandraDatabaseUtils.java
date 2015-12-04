@@ -1,16 +1,11 @@
 package com.data.mig.cassandra.utils;
 
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.sql.Connection;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 import org.json.simple.JSONArray;
@@ -19,17 +14,13 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.data.mig.constants.IApplicationConstants;
-import com.data.mig.db.CassandraDatabaseColumnFamily;
 import com.data.mig.db.CassandraDatabaseConnect;
 import com.data.mig.db.CassandraDatabaseExecute;
 import com.data.mig.mysql.db.MysqlDatabaseConnect;
 import com.data.mig.mysql.db.MysqlTableColumnDetails;
 import com.data.mig.mysql.db.MysqlTableRelationship;
 import com.data.mig.mysql.db.TableDetails;
-import com.data.mig.read.json.extract.ReadJsonDataFromFile;
 import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.Session;
-import java.sql.Connection;
 
 public class CassandraDatabaseUtils {
 

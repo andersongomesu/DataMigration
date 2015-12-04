@@ -7,7 +7,6 @@ import java.util.Map;
 
 import com.data.mig.cassandra.utils.CassandraDatabaseUtils;
 import com.data.mig.constants.IApplicationConstants;
-import com.data.mig.mongo.utils.MongoDatabaseUtils;
 import com.data.mig.mysql.db.MysqlDatabaseConnect;
 import com.data.mig.mysql.db.MysqlTableRelationship;
 import com.data.mig.mysql.db.TableDetails;
