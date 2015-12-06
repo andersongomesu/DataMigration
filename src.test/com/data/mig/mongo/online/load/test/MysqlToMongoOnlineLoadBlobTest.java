@@ -1,5 +1,6 @@
 package com.data.mig.mongo.online.load.test;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.util.Assert;
 
@@ -9,6 +10,7 @@ import com.data.mig.mongo.online.load.MysqlToMongoOnlineLoad;
 public class MysqlToMongoOnlineLoadBlobTest {
 
 	@Test
+	@Ignore
 	public void loadDataFromMysqlToMongoIncludingChildTablesTest() {
 		MysqlToMongoOnlineLoad mysqlToMongoOnlineLoad = new MysqlToMongoOnlineLoad();
 

@@ -2,7 +2,6 @@ package com.data.mig.mongo.utils;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.json.simple.JSONArray;
@@ -31,12 +30,13 @@ public class MongoDatabaseUtils {
 			// collection
 			for (Map.Entry<String, Object> entrySet : jsonDataMap.entrySet()) {
 
-				Map<String, Object> rootTableMap = new LinkedHashMap<String, Object>();
+				//Map<String, Object> rootTableMap = new LinkedHashMap<String, Object>();
 
 				noOfWritesDone++;
-				rootTableMap.put(rootTableName, entrySet.getValue());
+				//rootTableMap.put(rootTableName, entrySet.getValue());
 
-				BasicDBObject basicDbObject = new BasicDBObject(rootTableMap);
+				//BasicDBObject basicDbObject = new BasicDBObject(rootTableMap);
+				BasicDBObject basicDbObject = (BasicDBObject) JSON.parse(entrySet.getValue().toString());
 				mongoCollectionInsert.insertIntoCollection(mongoDatabaseName, collectionName, basicDbObject);
 
 				
@@ -82,7 +82,7 @@ public class MongoDatabaseUtils {
 				/*rootTableMap.put(rootTableName, entrySet.getValue().toString());
 
 				BasicDBObject basicDbObject = new BasicDBObject(rootTableMap);*/
-				BasicDBObject basicDbObject = (BasicDBObject) JSON.parse (entrySet.getValue().toString());
+				BasicDBObject basicDbObject = (BasicDBObject) JSON.parse(entrySet.getValue().toString());
 				mongoCollectionInsert.insertIntoCollection(mongoDatabaseName, collectionName, basicDbObject);
 
 				

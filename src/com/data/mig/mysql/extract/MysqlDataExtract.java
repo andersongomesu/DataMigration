@@ -18,8 +18,8 @@ import com.data.mig.mysql.db.MysqlTableColumnDetails;
 
 public class MysqlDataExtract {
 
-	private MysqlDataExtractQueryUtils mysqlDataExtractQueryUtils = new MysqlDataExtractQueryUtils ();
-	
+	private MysqlDataExtractQueryUtils mysqlDataExtractQueryUtils = new MysqlDataExtractQueryUtils();
+
 	public boolean extractMysqlDataIntoJsonFile(String schemaName, String parentTableName,
 			long noOfRecordsToBeExtracted, String filePath) throws SQLException {
 
@@ -79,8 +79,9 @@ public class MysqlDataExtract {
 			// Map<String, String> primaryKeyOfTableMap =
 			// getPrimaryColumnDetails(conn, schemaName, parentTableName);
 
-			StringBuilder parentTableSelectQuery = mysqlDataExtractQueryUtils.constructSelectQueryForSubsequentExtract(schemaName, parentTableName,
-					parentTableColumnDetails, noOfRecordsToBeExtracted, primaryColumnValues);
+			StringBuilder parentTableSelectQuery = mysqlDataExtractQueryUtils.constructSelectQueryForSubsequentExtract(
+					schemaName, parentTableName, parentTableColumnDetails, noOfRecordsToBeExtracted,
+					primaryColumnValues);
 
 			if (parentTableSelectQuery != null) {
 				parentTableStatement = conn.createStatement();
@@ -125,6 +126,7 @@ public class MysqlDataExtract {
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		JsonNode jsonNode = null;
+		//JSONObject jsonObject = null;
 		Connection conn = null;
 
 		try {
@@ -132,8 +134,8 @@ public class MysqlDataExtract {
 
 			Map<String, String> parentTableColumnDetails = getColumnDetails(conn, schemaName, parentTableName);
 
-			StringBuilder parentTableSelectQuery = mysqlDataExtractQueryUtils.constructSelectQuery(schemaName, parentTableName, parentTableColumnDetails,
-					noOfRecordsToBeExtracted);
+			StringBuilder parentTableSelectQuery = mysqlDataExtractQueryUtils.constructSelectQuery(schemaName,
+					parentTableName, parentTableColumnDetails, noOfRecordsToBeExtracted);
 
 			if (parentTableSelectQuery != null) {
 				parentTableStatement = conn.createStatement();
@@ -142,6 +144,7 @@ public class MysqlDataExtract {
 				if (parentTableResultSet != null) {
 
 					while (parentTableResultSet.next()) {
+
 						jsonNode = new JsonNodeRowMapper(objectMapper).mapRow(parentTableResultSet,
 								parentTableResultSet.getRow());
 						targetObject.put(parentTableName + parentTableResultSet.getRow(), jsonNode);
@@ -182,40 +185,6 @@ public class MysqlDataExtract {
 		return mysqlTableColumnDetails.getMysqlTableColumnDetails(conn, schemaName, tableName);
 
 	}
-
-/*	private StringBuilder constructSelectQuery(String tableName, Map<String, String> tableColumnDetailsMap,
-			Long limitNoOfRows) {
-
-		StringBuilder query = null;
-
-		if (tableColumnDetailsMap != null) {
-
-			for (Map.Entry<String, String> entry : tableColumnDetailsMap.entrySet()) {
-
-				if (query == null) {
-					query = new StringBuilder();
-					query.append("select ");
-					query.append(entry.getKey());
-				} else {
-					query.append(", " + entry.getKey());
-				}
-
-			}
-
-			if (query != null) {
-				query.append(" from  ");
-				query.append(tableName);
-				query.append(" limit ");
-				query.append(limitNoOfRows);
-
-			}
-
-		}
-
-		return query;
-
-	}*/
-
 
 
 }

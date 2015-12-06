@@ -6,7 +6,7 @@ public interface IApplicationConstants {
 	
 	String defaultMySqlUserId = "root";
 	
-	String defaultMySqlPassword = "admin";
+	String defaultMySqlPassword = "root";
 	
 	String retriveMySqlRelationshipQuery = "select  " +
 				"concat(table_name, '.', column_name) as 'foreign_table_and_column', " +

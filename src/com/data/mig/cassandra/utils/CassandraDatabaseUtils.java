@@ -24,14 +24,14 @@ import com.datastax.driver.core.Cluster;
 
 public class CassandraDatabaseUtils {
 
-	public Boolean writeMapIntoCassandraDatabase(String sourceSchemaName,String sourceTableName, String keySpaceName, String rootColumnFamilyName,
-			String childColumnFamilyName, Map<String, Object> jsonDataMap) {
+	public Boolean writeMapIntoCassandraDatabase(String sourceSchemaName, String sourceTableName, String keySpaceName,
+			String rootColumnFamilyName, String childColumnFamilyName, Map<String, Object> jsonDataMap) {
 
 		System.out.println("### Start of write into Cassandra database process ###");
 
 		boolean createColumnFamilyExecutedOnce = false;
 		CassandraDatabaseConnect cassandraDatabaseConnect = new CassandraDatabaseConnect();
-	
+
 		Cluster cluster = cassandraDatabaseConnect.getCassandraDBConnection();
 		boolean writeMapToCassandraDatabaseSuccessFlag = false;
 
@@ -39,64 +39,72 @@ public class CassandraDatabaseUtils {
 
 		if (jsonDataMap != null) {
 			JSONParser parser = new JSONParser();
-			
-			for (Map.Entry<String, Object> entrySet : jsonDataMap.entrySet()) {
-				
-				
-				noOfWritesDone++;
-				
-				try {
-					
-					if(childColumnFamilyName != null)
-					{
-									JSONArray jsonArray = (JSONArray) parser.parse(entrySet.getValue().toString());
-									if (entrySet.getValue() != null) /// dataTypeFinder(e.getValue())
-									{
-										String datatype = dataTypeFinder(entrySet.getValue(), entrySet.getKey().toString());
-										//System.out.println("key is " + entrySet.getKey() + "value is " + entrySet.getValue()
-												//+ "Class is" + entrySet.getValue().getClass());
-				
-										if (!createColumnFamilyExecutedOnce) {
-											createCassandraDataModel(sourceSchemaName, sourceTableName, cluster, keySpaceName, jsonArray, rootColumnFamilyName,
-													childColumnFamilyName);
-											createColumnFamilyExecutedOnce = true;
-										}
-										
-										boolean insertIntoCassandraColumnFamilySuccessFlag = insertIntoCassandraDataModel(cluster, keySpaceName, jsonArray, rootColumnFamilyName,
-												childColumnFamilyName);
-										if(!insertIntoCassandraColumnFamilySuccessFlag){
-											//System.out.println("insertIntoCassandraColumnFamily is falied for column family  "+childColumnFamilyName + "_By_" + rootColumnFamilyName +" for record   "+jsonObject.toJSONString());
-											writeMapToCassandraDatabaseSuccessFlag = false;	
-									    }
 
-								  } // if
-					}
-					else
-					{
+			for (Map.Entry<String, Object> entrySet : jsonDataMap.entrySet()) {
+
+				noOfWritesDone++;
+
+				try {
+
+					if (childColumnFamilyName != null) {
+						JSONArray jsonArray = (JSONArray) parser.parse(entrySet.getValue().toString());
+						if (entrySet.getValue() != null) /// dataTypeFinder(e.getValue())
+						{
+							String datatype = dataTypeFinder(entrySet.getValue(), entrySet.getKey().toString());
+							// System.out.println("key is " + entrySet.getKey()
+							// + "value is " + entrySet.getValue()
+							// + "Class is" + entrySet.getValue().getClass());
+
+							if (!createColumnFamilyExecutedOnce) {
+								createCassandraDataModel(sourceSchemaName, sourceTableName, cluster, keySpaceName,
+										jsonArray, rootColumnFamilyName, childColumnFamilyName);
+								createColumnFamilyExecutedOnce = true;
+							}
+
+							boolean insertIntoCassandraColumnFamilySuccessFlag = insertIntoCassandraDataModel(cluster,
+									keySpaceName, jsonArray, rootColumnFamilyName, childColumnFamilyName);
+							if (!insertIntoCassandraColumnFamilySuccessFlag) {
+								// System.out.println("insertIntoCassandraColumnFamily
+								// is falied for column family
+								// "+childColumnFamilyName + "_By_" +
+								// rootColumnFamilyName +" for record
+								// "+jsonObject.toJSONString());
+								writeMapToCassandraDatabaseSuccessFlag = false;
+							}
+
+						} // if
+					} else {
 						JSONObject jsonObject = (JSONObject) parser.parse(entrySet.getValue().toString());
 						if (entrySet.getValue() != null) /// dataTypeFinder(e.getValue())
 						{
 							String datatype = dataTypeFinder(entrySet.getValue(), entrySet.getKey().toString());
-							//System.out.println(" jsonObject key is " + entrySet.getKey() + "value is " + entrySet.getValue()
-								//	+ "Class is" + entrySet.getValue().getClass());
-								if (!createColumnFamilyExecutedOnce) {
-									createCassandraColumnFamily(sourceSchemaName,sourceTableName,cluster, keySpaceName,jsonObject, rootColumnFamilyName, childColumnFamilyName);
-									createColumnFamilyExecutedOnce = true;
-								}
-								boolean insertIntoCassandraColumnFamilySuccessFlag = insertIntoCassandraColumnFamily(cluster, keySpaceName, jsonObject, rootColumnFamilyName,
-										childColumnFamilyName);
-								if(!insertIntoCassandraColumnFamilySuccessFlag){
-									//System.out.println("insertIntoCassandraColumnFamily is falied for column family  "+childColumnFamilyName + "_By_" + rootColumnFamilyName +" for record   "+jsonObject.toJSONString());
-									writeMapToCassandraDatabaseSuccessFlag = false;	
-							    }
+							// System.out.println(" jsonObject key is " +
+							// entrySet.getKey() + "value is " +
+							// entrySet.getValue()
+							// + "Class is" + entrySet.getValue().getClass());
+							if (!createColumnFamilyExecutedOnce) {
+								createCassandraColumnFamily(sourceSchemaName, sourceTableName, cluster, keySpaceName,
+										jsonObject, rootColumnFamilyName, childColumnFamilyName);
+								createColumnFamilyExecutedOnce = true;
 							}
+							boolean insertIntoCassandraColumnFamilySuccessFlag = insertIntoCassandraColumnFamily(
+									cluster, keySpaceName, jsonObject, rootColumnFamilyName, childColumnFamilyName);
+							if (!insertIntoCassandraColumnFamilySuccessFlag) {
+								// System.out.println("insertIntoCassandraColumnFamily
+								// is falied for column family
+								// "+childColumnFamilyName + "_By_" +
+								// rootColumnFamilyName +" for record
+								// "+jsonObject.toJSONString());
+								writeMapToCassandraDatabaseSuccessFlag = false;
+							}
+						}
 					}
 				} // try
 				catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 			}
 			writeMapToCassandraDatabaseSuccessFlag = true;
 		}
@@ -150,34 +158,33 @@ public class CassandraDatabaseUtils {
 		return datatype;
 	}
 
-	public boolean createCassandraDataModel(String sourceSchemaName,String sourceTableName, Cluster cluster, String keySpaceName, JSONArray jsonArray,
-			String rootColumnFamilyName, String childColumnFamilyName) {
+	public boolean createCassandraDataModel(String sourceSchemaName, String sourceTableName, Cluster cluster,
+			String keySpaceName, JSONArray jsonArray, String rootColumnFamilyName, String childColumnFamilyName) {
 		boolean createCassandraDataModelSuccessFlag = false;
-	
+
 		JSONObject jsonObject = new JSONObject();
 
 		if (jsonArray.get(0) != null) {
 			jsonObject = (JSONObject) jsonArray.get(0);
-			createCassandraDataModelSuccessFlag=createCassandraColumnFamily(sourceSchemaName,sourceTableName,cluster, keySpaceName,jsonObject, rootColumnFamilyName, childColumnFamilyName);
+			createCassandraDataModelSuccessFlag = createCassandraColumnFamily(sourceSchemaName, sourceTableName,
+					cluster, keySpaceName, jsonObject, rootColumnFamilyName, childColumnFamilyName);
 		}
 
 		return createCassandraDataModelSuccessFlag;
 	}
 
-	public boolean createCassandraColumnFamily(String sourceSchemaName,String sourceTableName, Cluster cluster, String keySpaceName,JSONObject jsonObject, 
-			String rootColumnFamilyName, String childColumnFamilyName) {
+	public boolean createCassandraColumnFamily(String sourceSchemaName, String sourceTableName, Cluster cluster,
+			String keySpaceName, JSONObject jsonObject, String rootColumnFamilyName, String childColumnFamilyName) {
 		boolean columnfamilyCreateSuccessFlag = false;
 
 		String parentTablePrimaryKey = null;
 		String childTablePrimaryKey = null;
 		String columnFamilyName = null;
-		if(childColumnFamilyName!=null)
-		{
+		if (childColumnFamilyName != null) {
 			columnFamilyName = childColumnFamilyName + "_By_" + rootColumnFamilyName;
-		}
-		else
-			columnFamilyName=rootColumnFamilyName;
-		
+		} else
+			columnFamilyName = rootColumnFamilyName;
+
 		String createColumnFamilyCommand = "Create TABLE " + columnFamilyName + " (" + columnFamilyName + "_id uuid, ";
 
 		Iterator jsonIterator = jsonObject.entrySet().iterator();
@@ -201,85 +208,73 @@ public class CassandraDatabaseUtils {
 
 			Connection conn = getDatabaseConnection();
 			MysqlTableColumnDetails mysqlTableColumnDetails = new MysqlTableColumnDetails();
-			parentTablePrimaryKey = getPrimayKeyColumnDetails(conn, sourceSchemaName,sourceTableName);
-			if(childColumnFamilyName!= null)
-			{
-				childTablePrimaryKey = getPrimayKeyColumnDetails(conn, sourceSchemaName,childColumnFamilyName);
+			parentTablePrimaryKey = getPrimayKeyColumnDetails(conn, sourceSchemaName, sourceTableName);
+			if (childColumnFamilyName != null) {
+				childTablePrimaryKey = getPrimayKeyColumnDetails(conn, sourceSchemaName, childColumnFamilyName);
 			}
 
 		} catch (Exception e) {
 			System.out.println(e.getStackTrace());
 		}
 
-		if(childColumnFamilyName!=null)
-		{
-		createColumnFamilyCommand += "PRIMARY KEY (" + parentTablePrimaryKey + ","
-				+ childTablePrimaryKey + "));";
-		}
-		else
-		{
+		if (childColumnFamilyName != null) {
+			createColumnFamilyCommand += "PRIMARY KEY (" + parentTablePrimaryKey + "," + childTablePrimaryKey + "));";
+		} else {
 			createColumnFamilyCommand += "PRIMARY KEY (" + parentTablePrimaryKey + "));";
 		}
 		System.out.println(createColumnFamilyCommand);
-		columnfamilyCreateSuccessFlag =
-		executeQuery(cluster,keySpaceName,createColumnFamilyCommand);
+		columnfamilyCreateSuccessFlag = executeQuery(cluster, keySpaceName, createColumnFamilyCommand);
 
 		return columnfamilyCreateSuccessFlag;
 	}
 
-	public boolean insertIntoCassandraDataModel(Cluster cluster, String keySpaceName,JSONArray jsonArray,
+	public boolean insertIntoCassandraDataModel(Cluster cluster, String keySpaceName, JSONArray jsonArray,
 			String rootColumnFamilyName, String childColumnFamilyName) {
 
 		boolean insertAllRecordsSuccessFlag = true;
-		boolean insertIntoCassandraColumnFamilySuccessFlag = false;	
-		
+		boolean insertIntoCassandraColumnFamilySuccessFlag = false;
+
 		Iterator jsonArrayIterator = jsonArray.iterator();
 
 		while (jsonArrayIterator.hasNext()) {
-			
-			insertIntoCassandraColumnFamilySuccessFlag = false;	
+
+			insertIntoCassandraColumnFamilySuccessFlag = false;
 			JSONObject jsonObject = (JSONObject) jsonArrayIterator.next();
-			
-			insertIntoCassandraColumnFamilySuccessFlag = insertIntoCassandraColumnFamily(cluster, keySpaceName, jsonObject, rootColumnFamilyName,
-					childColumnFamilyName);
-			if(!insertIntoCassandraColumnFamilySuccessFlag){
-				//System.out.println("insertIntoCassandraColumnFamily is falied for column family  "+childColumnFamilyName + "_By_" + rootColumnFamilyName +" for record   "+jsonObject.toJSONString());
-				insertAllRecordsSuccessFlag = false;	
-		    }
-			
+
+			insertIntoCassandraColumnFamilySuccessFlag = insertIntoCassandraColumnFamily(cluster, keySpaceName,
+					jsonObject, rootColumnFamilyName, childColumnFamilyName);
+			if (!insertIntoCassandraColumnFamilySuccessFlag) {
+				// System.out.println("insertIntoCassandraColumnFamily is falied
+				// for column family "+childColumnFamilyName + "_By_" +
+				// rootColumnFamilyName +" for record
+				// "+jsonObject.toJSONString());
+				insertAllRecordsSuccessFlag = false;
+			}
+
 		}
 		return insertAllRecordsSuccessFlag;
 	}
 
-	
-	
-	public boolean insertIntoCassandraColumnFamily(Cluster cluster, String keySpaceName,JSONObject jsonObject,
+	public boolean insertIntoCassandraColumnFamily(Cluster cluster, String keySpaceName, JSONObject jsonObject,
 			String rootColumnFamilyName, String childColumnFamilyName) {
 
 		boolean insertAllRecordsSuccessFlag = true;
 		String insertKeysCommand = null;
 		String insertValuesCommand = null;
-		String columnFamilyName=null;
-		if(childColumnFamilyName!=null)
-		{
+		String columnFamilyName = null;
+		if (childColumnFamilyName != null) {
 			columnFamilyName = childColumnFamilyName + "_By_" + rootColumnFamilyName;
+		} else {
+			columnFamilyName = rootColumnFamilyName;
 		}
-		else
-		{
-			columnFamilyName = rootColumnFamilyName;	
-		}
-		
-		
-		boolean insertIntoCassandraColumnFamilySuccessFlag = false;	
-		
-		
-		
-		insertKeysCommand = "INSERT INTO " + keySpaceName + "." + columnFamilyName + " (" + columnFamilyName
-				+ "_id,";
+
+		boolean insertIntoCassandraColumnFamilySuccessFlag = false;
+
+		insertKeysCommand = "INSERT INTO " + keySpaceName + "." + columnFamilyName + " (" + columnFamilyName + "_id,";
 		insertValuesCommand = " ) VALUES ( " + UUID.randomUUID() + ", ";
-		
-	    System.out.println(jsonObject.toString());
-		
+
+		System.out.println(jsonObject.toString());
+
 		Iterator jsonIterator = jsonObject.entrySet().iterator();
 
 		while (jsonIterator.hasNext()) {
@@ -306,23 +301,21 @@ public class CassandraDatabaseUtils {
 
 		String insertIntoCassandraCommand = insertKeysCommand.substring(0, insertKeysCommand.lastIndexOf(',')) + " "
 				+ insertValuesCommand.substring(0, insertValuesCommand.lastIndexOf(',')) + ");";
-		//System.out.println(insertIntoCassandraCommand);
+		// System.out.println(insertIntoCassandraCommand);
 
 		insertIntoCassandraColumnFamilySuccessFlag = executeQuery(cluster, keySpaceName, insertIntoCassandraCommand);
-		if(!insertIntoCassandraColumnFamilySuccessFlag)
-		{
-			if(childColumnFamilyName!= null)
-			{
-				System.out.println("insertIntoCassandraColumnFamily is falied for column family  "+childColumnFamilyName + "_By_" + rootColumnFamilyName +" for record   "+jsonObject.toJSONString());
-			}
-			else
-			{
-				System.out.println("insertIntoCassandraColumnFamily is falied for column family  "+ rootColumnFamilyName +" for record   "+jsonObject.toJSONString());
+		if (!insertIntoCassandraColumnFamilySuccessFlag) {
+			if (childColumnFamilyName != null) {
+				System.out
+						.println("insertIntoCassandraColumnFamily is falied for column family  " + childColumnFamilyName
+								+ "_By_" + rootColumnFamilyName + " for record   " + jsonObject.toJSONString());
+			} else {
+				System.out.println("insertIntoCassandraColumnFamily is falied for column family  "
+						+ rootColumnFamilyName + " for record   " + jsonObject.toJSONString());
 			}
 			insertAllRecordsSuccessFlag = false;
 		}
-		
-		
+
 		return insertAllRecordsSuccessFlag;
 	}
 
@@ -348,8 +341,8 @@ public class CassandraDatabaseUtils {
 		String primaryKeyName = null;
 		MysqlTableColumnDetails mysqlTableColumnDetails = new MysqlTableColumnDetails();
 
-		Map<String, String> primaryKeyMap = mysqlTableColumnDetails.getMysqlTablePrimaryKey(conn,
-				schemaName, tableName);
+		Map<String, String> primaryKeyMap = mysqlTableColumnDetails.getMysqlTablePrimaryKey(conn, schemaName,
+				tableName);
 
 		Iterator primaryKeyiterator = primaryKeyMap.keySet().iterator();
 
@@ -366,7 +359,5 @@ public class CassandraDatabaseUtils {
 				IApplicationConstants.defaultMySqlSchemaName, tableName);
 		return childTableDetailsList;
 	}
-
-	
 
 }

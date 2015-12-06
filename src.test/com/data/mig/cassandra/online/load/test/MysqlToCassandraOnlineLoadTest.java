@@ -22,7 +22,7 @@ public class MysqlToCassandraOnlineLoadTest {
 		Assert.isTrue(loadStatus);
 	}
 
-	/*@Test
+	@Test
 	public void loadDataFromMysqlToCassandraWithoutChildTablesTest() {
 		MysqlToCassandraOnlineLoad mysqlToCassandraOnlineLoad = new MysqlToCassandraOnlineLoad();
 
@@ -42,14 +42,14 @@ public class MysqlToCassandraOnlineLoadTest {
 		loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
 				IApplicationConstants.defaultMySqlSchemaName, "products", "mykeyspace", "products", 10L, false);
 		
-		loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
-				IApplicationConstants.defaultMySqlSchemaName, "productlines", "mykeyspace", "productlines", 10L, false);
+ 		/*loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
+				IApplicationConstants.defaultMySqlSchemaName, "productlines", "mykeyspace", "productlines", 10L, false);*/
 		
 		loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
 				IApplicationConstants.defaultMySqlSchemaName, "orderdetails", "mykeyspace", "orderdetails", 10L, false);
 
 
 		Assert.isTrue(loadStatus);
-	}*/
+	}
 
 }

@@ -14,19 +14,27 @@
 <link
 	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"
 	rel="stylesheet">
-	
+
 <script type="text/javascript">
-function submitForm(invokeParamVal) {
-    
-	$('#pageName').attr('name', invokeParamVal);
-	
-	var urlContext = "/DataMigration/dm/";
-	
-	// submit the form.
-	$('#command').attr('action', urlContext + invokeParamVal).submit();
-    
-}
-</script>	
+	function submitForm(invokeParamVal) {
+
+		$('#pageName').attr('name', invokeParamVal);
+
+		var urlContext = "/DataMigration/dm/";
+
+		if (invokeParamVal == null && invokeParamVal == "null"
+				&& invokeParamVal == "home") {
+			// submit the form.
+			$('#command').attr('method', "GET");
+			$('#command').attr('action', urlContext + invokeParamVal).submit();
+
+		} else {
+			// submit the form.
+			$('#command').attr('action', urlContext + invokeParamVal).submit();
+		}
+
+	}
+</script>
 </head>
 <body>
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -66,7 +74,10 @@ function submitForm(invokeParamVal) {
 					<ul class="nav navbar-nav">
 						<li><a href="#" onClick="submitForm('home')">Online Load</a></li>
 						<li class="divider"></li>
-						<li class="active"><a href="#" >Batch Load</a></li>
+						<li class="active"><a href="#">Batch Load</a></li>
+						<li class="divider"></li>
+						<li><a href="#" onClick="submitForm('getProductLine')">Product
+								Line</a></li>
 					</ul>
 				</div>
 			</div>
@@ -78,7 +89,7 @@ function submitForm(invokeParamVal) {
 
 	<form:form method="POST" name="onlineLoadForm"
 		action="/DataMigration/dm/submitOnlineLoad" role="form">
-		
+
 		<form:hidden path="pageName" />
 		<form:hidden path="pageAction" />
 
@@ -215,14 +226,14 @@ function submitForm(invokeParamVal) {
 						</h4>
 					</div>
 				</div>
-			</div>			
+			</div>
 			<br>
 			<div class="row">
 				<div class="form-group">
 					<div class="col-xs-6 col-sm-4"></div>
 					<div class="col-xs-6 col-sm-4">
-						<input class="btn btn-success" type="submit" onclick="submitForm('submitBatchLoad')"
-							value="Migrate the data">
+						<input class="btn btn-success" type="submit"
+							onclick="submitForm('submitBatchLoad')" value="Migrate the data">
 					</div>
 				</div>
 			</div>

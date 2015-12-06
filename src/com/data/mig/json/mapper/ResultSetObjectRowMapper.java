@@ -9,58 +9,50 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-import org.codehaus.jackson.map.ObjectMapper;
-import org.json.simple.JSONObject;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.JdbcUtils;
 
-public class JsonObjectRowMapper implements RowMapper<JSONObject> {
+public class ResultSetObjectRowMapper implements RowMapper<Map<String, Object>> {
 
-    @SuppressWarnings("unused")
-	private final ObjectMapper mapper;
-    
-    public JsonObjectRowMapper(ObjectMapper mapper) {
-        this.mapper = mapper;
-    }
-
-    @SuppressWarnings("unchecked")
 	@Override
-    public JSONObject mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public Map<String, Object> mapRow(ResultSet rs, int rowNum) throws SQLException {
         //ObjectNode objectNode = mapper.();
-    	JSONObject jsonObject = new JSONObject();
+    	Map<String, Object> resultSetObjectMap = new LinkedHashMap<String, Object>();
         ResultSetMetaData rsmd = rs.getMetaData();
         int columnCount = rsmd.getColumnCount();
         for (int index = 1; index <= columnCount; index++) {
             String column = JdbcUtils.lookupColumnName(rsmd, index);
             Object value = rs.getObject(column);
             if (value == null) {
-            	jsonObject.put(column, column);
+            	resultSetObjectMap.put(column, column);
             } else if (value instanceof Integer) {
-            	jsonObject.put(column, (Integer) value);
+            	resultSetObjectMap.put(column, (Integer) value);
             } else if (value instanceof String) {
-                jsonObject.put(column, (String) value);                
+                resultSetObjectMap.put(column, (String) value);                
             } else if (value instanceof Boolean) {
-                jsonObject.put(column, (Boolean) value);           
+                resultSetObjectMap.put(column, (Boolean) value);           
             } else if (value instanceof Date) {
-                jsonObject.put(column, ((Date) value));                
+                resultSetObjectMap.put(column, ((Date) value));                
             } else if (value instanceof Long) {
-                jsonObject.put(column, (Long) value);                
+                resultSetObjectMap.put(column, (Long) value);                
             } else if (value instanceof Double) {
-                jsonObject.put(column, (Double) value);                
+                resultSetObjectMap.put(column, (Double) value);                
             } else if (value instanceof Float) {
-                jsonObject.put(column, (Float) value);                
+                resultSetObjectMap.put(column, (Float) value);                
             } else if (value instanceof BigDecimal) {
-                jsonObject.put(column, (BigDecimal) value);
+                resultSetObjectMap.put(column, (BigDecimal) value);
             } else if (value instanceof Byte) {
-                jsonObject.put(column, (Byte) value);
+                resultSetObjectMap.put(column, (Byte) value);
             } else if (value instanceof byte[]) {
-                jsonObject.put(column, (byte[]) value);                
+                resultSetObjectMap.put(column, (byte[]) value);                
             } else {
                 throw new IllegalArgumentException("Unmappable object type: " + value.getClass());
             }
         }
-        return jsonObject;
+        return resultSetObjectMap;
     }
 
 }

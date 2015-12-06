@@ -60,7 +60,7 @@ public class CassandraDatabaseKeyspaceTest {
 		    
 	    Cluster cluster = cassandraDatabaseConnect.getCassandraDBConnection();
 			
-	    Session dbsession = cassandraKeyspace.deleteCassandraKeyspace(cluster, "mytestkeyspace");
+	    Session dbsession = cassandraKeyspace.deleteCassandraKeyspace(cluster, "mykeyspace");
 		Assert.assertNotNull(dbsession);
 		
 	}	
