@@ -8,6 +8,10 @@ public interface IApplicationConstants {
 	
 	String defaultMySqlPassword = "root";
 	
+	String defaultOracleUserId = "HR";
+	
+	String defaultOraclePassword = "HR";	
+	
 	String retriveMySqlRelationshipQuery = "select  " +
 				"concat(table_name, '.', column_name) as 'foreign_table_and_column', " +
 				"table_name as 'foreign_table', " +
@@ -42,6 +46,11 @@ public interface IApplicationConstants {
 			"FROM information_schema.COLUMNS " +
 			"WHERE table_schema = ? " +
 			"and table_name = ? ";	
+	
+	String retriveOracleColumnDetails = "select  table_name, column_name, data_type " +
+			"FROM ALL_TAB_COLS " +
+			"WHERE owner = ? " +
+			"and table_name = ? ";		
 
 	String retriveMySqlPrimaryDetails = "select  column_name,data_type " +
 			"FROM information_schema.COLUMNS " +
