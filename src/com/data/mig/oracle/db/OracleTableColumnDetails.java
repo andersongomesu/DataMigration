@@ -11,9 +11,8 @@ import com.data.mig.constants.IApplicationConstants;
 import com.data.mig.mysql.db.MysqlDatabaseConnect;
 
 public class OracleTableColumnDetails {
-	
-	public Map<String, String> getOracleTableColumnDetails(Connection conn,
-			String schemaName, String tableName) {
+
+	public Map<String, String> getOracleTableColumnDetails(Connection conn, String schemaName, String tableName) {
 
 		Map<String, String> columnDetailsOfATable = null;
 		PreparedStatement pstmt = null;
@@ -23,14 +22,14 @@ public class OracleTableColumnDetails {
 
 			if (conn == null) {
 				OracleDatabaseConnect mysqlDatabaseConnect = new OracleDatabaseConnect();
-				mysqlDatabaseConnect.getOracleDBConnection(
-						IApplicationConstants.defaultOracleUserId,
+				mysqlDatabaseConnect.getOracleDBConnection(IApplicationConstants.defaultOracleUserId,
 						IApplicationConstants.defaultOraclePassword);
 
 			}
 
-			pstmt = conn
-					.prepareStatement(IApplicationConstants.retriveOracleColumnDetails);
+			pstmt = conn.prepareStatement(IApplicationConstants.retriveOracleColumnDetails);
+
+			System.out.println("Oracle column details :" + IApplicationConstants.retriveOracleColumnDetails);
 			pstmt.setString(1, schemaName);
 			pstmt.setString(2, tableName);
 
@@ -44,9 +43,7 @@ public class OracleTableColumnDetails {
 
 				while (rs.next()) {
 					isResultsetHasRecords = true;
-					columnDetailsOfATable.put(
-							rs.getString("column_name"),
-							rs.getString("data_type"));
+					columnDetailsOfATable.put(rs.getString("column_name"), rs.getString("data_type"));
 				}
 
 			}
@@ -62,10 +59,9 @@ public class OracleTableColumnDetails {
 
 		return columnDetailsOfATable;
 
-	}	
+	}
 
-	public Map<String, String> getOracleTablePrimaryKey(Connection conn,
-			String schemaName, String tableName) {
+	public Map<String, String> getOracleTablePrimaryKey(Connection conn, String schemaName, String tableName) {
 
 		Map<String, String> primaryColumnOfATable = null;
 		PreparedStatement pstmt = null;
@@ -75,16 +71,18 @@ public class OracleTableColumnDetails {
 
 			if (conn == null) {
 				MysqlDatabaseConnect mysqlDatabaseConnect = new MysqlDatabaseConnect();
-				mysqlDatabaseConnect.getMySqlDBConnection(schemaName,
-						IApplicationConstants.defaultMySqlUserId,
+				mysqlDatabaseConnect.getMySqlDBConnection(schemaName, IApplicationConstants.defaultMySqlUserId,
 						IApplicationConstants.defaultMySqlPassword);
 
 			}
 
-			pstmt = conn
-					.prepareStatement(IApplicationConstants.retriveMySqlPrimaryDetails);
+			pstmt = conn.prepareStatement(IApplicationConstants.retrieveOraclePrimaryDetails);
+
+			System.out.println("Oracle primary details :" + IApplicationConstants.retrieveOraclePrimaryDetails);
 			pstmt.setString(1, schemaName);
 			pstmt.setString(2, tableName);
+			pstmt.setString(3, schemaName);
+			pstmt.setString(4, tableName);
 
 			rs = pstmt.executeQuery();
 
@@ -96,9 +94,7 @@ public class OracleTableColumnDetails {
 
 				while (rs.next()) {
 					isResultsetHasRecords = true;
-					primaryColumnOfATable.put(
-							rs.getString("column_name"),
-							rs.getString("data_type"));
+					primaryColumnOfATable.put(rs.getString("column_name"), rs.getString("data_type"));
 				}
 
 			}
@@ -114,7 +110,6 @@ public class OracleTableColumnDetails {
 
 		return primaryColumnOfATable;
 
-	}	
-	
-	
+	}
+
 }

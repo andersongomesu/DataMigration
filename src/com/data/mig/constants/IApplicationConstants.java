@@ -8,8 +8,8 @@ public interface IApplicationConstants {
 	
 	String defaultMySqlPassword = "root";
 	
-	String defaultOracleUserId = "HR";
 	
+	String defaultOracleUserId = "HR";
 	String defaultOraclePassword = "HR";	
 	
 	String retriveMySqlRelationshipQuery = "select  " +
@@ -57,6 +57,17 @@ public interface IApplicationConstants {
 			"WHERE table_schema = ? " +
 			"and table_name = ? " +
 			"and column_key = 'PRI' ";
+	
+	String retrieveOraclePrimaryDetails = "Select ac.column_name as \"column_name\", ac.DATA_TYPE as \"data_type\" from ALL_TAB_COLS ac where ac.COLUMN_NAME in " +
+			" (Select atc.column_name  from ALL_CONS_COLUMNS atc, ALL_CONSTRAINTS ac " + 
+					" where atc.OWNER = ac.OWNER " + 
+					" and atc.TABLE_NAME = ac.TABLE_NAME " + 
+					" and ac.CONSTRAINT_NAME = atc.CONSTRAINT_NAME " +
+					" and atc.owner = ? " + 
+					" and atc.table_name = ? " + 
+					" and ac.CONSTRAINT_TYPE = 'P') " +
+					" and ac.owner = ? " +
+					" and ac.table_name = ? ";
 
 	String onlineLoadSuccessMessage = "Data has been migrated successfully !!!";
 	
