@@ -22,6 +22,7 @@
 
 		var urlContext = "/DataMigration/dm/";
 
+		
 		if (invokeParamVal != null && invokeParamVal != "null"
 				&& invokeParamVal == "home") {
 			// submit the form.
@@ -107,7 +108,7 @@
 						<li><a href="#" onClick="submitForm('batchHome')">Batch
 								Load</a></li>
 						<li class="divider"></li>
-						<li class="active"><a href="#">Product Line</a></li>
+						<li class="active"><a href="#" onClick="submitForm('getProductLine')">Product Line</a></li>
 					</ul>
 				</div>
 			</div>

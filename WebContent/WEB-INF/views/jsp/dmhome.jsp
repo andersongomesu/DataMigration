@@ -22,7 +22,7 @@
 
 		var urlContext = "/DataMigration/dm/";
 
-		if (invokeParamVal == null && invokeParamVal == "null"
+		if (invokeParamVal != null && invokeParamVal != "null"
 				&& invokeParamVal == "home") {
 			// submit the form.
 			$('#command').attr('method', "GET");
@@ -72,7 +72,7 @@
 				</a>
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
-						<li class="active"><a href="#">Online Load</a></li>
+						<li class="active"><a href="#" onClick="submitForm('home')">Online Load</a></li>
 						<li class="divider"></li>
 						<li><a href="#" onClick="submitForm('batchHome')">Batch
 								Load</a></li>
