@@ -216,12 +216,25 @@ public class CassandraDatabaseUtils {
 		} catch (Exception e) {
 			System.out.println(e.getStackTrace());
 		}
-
 		if (childColumnFamilyName != null) {
+				if(childTablePrimaryKey.equalsIgnoreCase(parentTablePrimaryKey))
+				{
+					createColumnFamilyCommand += "PRIMARY KEY (" + parentTablePrimaryKey + "));";
+				}
+				else
+				{
+					createColumnFamilyCommand += "PRIMARY KEY (" + parentTablePrimaryKey + "," + childTablePrimaryKey + "));";
+				}
+		}
+		else
+		{
+			createColumnFamilyCommand += "PRIMARY KEY (" + parentTablePrimaryKey + "));";
+		}
+		/*if (childColumnFamilyName != null) {
 			createColumnFamilyCommand += "PRIMARY KEY (" + parentTablePrimaryKey + "," + childTablePrimaryKey + "));";
 		} else {
 			createColumnFamilyCommand += "PRIMARY KEY (" + parentTablePrimaryKey + "));";
-		}
+		}*/
 		System.out.println(createColumnFamilyCommand);
 		columnfamilyCreateSuccessFlag = executeQuery(cluster, keySpaceName, createColumnFamilyCommand);
 

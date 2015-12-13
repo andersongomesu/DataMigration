@@ -20,11 +20,11 @@ public class MysqlToCassandraOnlineLoadTest {
 				IApplicationConstants.defaultMySqlSchemaName, "productlines", "mykeyspace", "productlines", 2L, true); // customers
 */
 		
-/*		Boolean loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
-				IApplicationConstants.defaultMySqlSchemaName, "orders", "mykeyspace", "orders", 10L, true);*/
-		
 		Boolean loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
-				IApplicationConstants.defaultMySqlSchemaName, "employees", "mykeyspace", "employees", 10L, true);
+				IApplicationConstants.defaultMySqlSchemaName, "orders", "mykeyspace", "orders", 10L, true);
+		
+		/*Boolean loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
+				IApplicationConstants.defaultMySqlSchemaName, "employees", "mykeyspace", "employees", 10L, true);*/
 		
 		Assert.isTrue(loadStatus);
 	}
