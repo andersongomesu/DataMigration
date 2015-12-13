@@ -6,7 +6,7 @@ public interface IApplicationConstants {
 	
 	String defaultMySqlUserId = "root";
 	
-	String defaultMySqlPassword = "admin";
+	String defaultMySqlPassword = "root";
 	
 	
 	String defaultOracleUserId = "HR";

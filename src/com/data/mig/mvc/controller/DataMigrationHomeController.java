@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,7 +27,7 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sun.org.apache.xml.internal.security.utils.Base64;
+
 
 @Controller
 @RequestMapping("/dm")
@@ -220,7 +221,10 @@ public class DataMigrationHomeController {
 				productLinesForm.getProductLine());
 
 		if (productLineDbObject != null) {
-			productLinesForm.setProductLineImageAsString(Base64.encode(productLineDbObject.get("image").toString().getBytes()));
+			//productLinesForm.setProductLineImageAsString(Base64.encode(productLineDbObject.get("image").toString().getBytes()));
+			//productLinesForm.setProductLineImageAsString(Base64.encodeBase64String(productLineDbObject.get("image").toString().getBytes()));
+			productLinesForm.setProductLineImageAsString(productLineDbObject.get("image").toString());
+			productLinesForm.setProductLineImage(Base64.decodeBase64(productLineDbObject.get("image").toString()));
 
 		}
 		
@@ -242,6 +246,7 @@ public class DataMigrationHomeController {
 
 		ModelAndView modelAndView = new ModelAndView("productline", "command", productLinesForm);
 		modelAndView.addObject("productLineImageAsString", productLinesForm.getProductLineImageAsString());
+		modelAndView.addObject("productLineImage", productLinesForm.getProductLineImage());
 		modelAndView.addObject("productLinesList", productLinesList);
 		modelAndView.addObject("productLinesForm", productLinesForm);
 		return modelAndView;
