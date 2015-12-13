@@ -159,7 +159,7 @@ public class MysqlDataExtractQueryUtils {
 					query = new StringBuilder();
 					query.append("select ");
 					if (keyColumnNameAndDataType.containsKey(entry.getKey())) {
-						query.append(parentTableName);
+						query.append(childTableName);
 						query.append(".");
 						query.append(entry.getKey());
 						query.append(" as ");
@@ -171,7 +171,7 @@ public class MysqlDataExtractQueryUtils {
 				} else {
 					if (keyColumnNameAndDataType.containsKey(entry.getKey())) {
 						query.append(" ,");
-						query.append(parentTableName);
+						query.append(childTableName);
 						query.append(".");
 						query.append(entry.getKey());
 						query.append(" as ");

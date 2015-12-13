@@ -6,7 +6,7 @@ public interface IApplicationConstants {
 	
 	String defaultMySqlUserId = "root";
 	
-	String defaultMySqlPassword = "root";
+	String defaultMySqlPassword = "admin";
 	
 	
 	String defaultOracleUserId = "HR";
@@ -38,7 +38,8 @@ public interface IApplicationConstants {
 		    "and cu.referenced_table_name = ? " +
 		    "and cu.table_schema = col.table_schema " +
 		    "and cu.table_name = col.table_name " +
-		    "and cu.column_name = col.column_name ";
+		    "and cu.column_name = col.column_name " +
+		    "and cu.table_name <> ? ";
 	
 	String retrieveMySQLTableDetails = "Select table_name from information_schema.tables where table_schema = ?";
 	

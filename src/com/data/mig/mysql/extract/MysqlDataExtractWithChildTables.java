@@ -178,8 +178,9 @@ public class MysqlDataExtractWithChildTables {
 												jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
 									} else if (keyColumnNameAndDataType.getValue() != null
 											&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("varchar")) {
-										childTableDetails.getPreparedStatement().setString(++columnIndex,
-												jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
+										System.out.println("Key is :" + jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
+										childTableDetails.getPreparedStatement().setString(++columnIndex, 
+												jsonNode.get(keyColumnNameAndDataType.getKey()).getTextValue());
 									}
 
 								}
@@ -318,8 +319,9 @@ public class MysqlDataExtractWithChildTables {
 												jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
 									} else if (keyColumnNameAndDataType.getValue() != null
 											&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("varchar")) {
-										childTableDetails.getPreparedStatement().setString(++columnIndex,
-												jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
+										System.out.println("Key is :" + jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
+										childTableDetails.getPreparedStatement().setString(++columnIndex, 
+												jsonNode.get(keyColumnNameAndDataType.getKey()).getTextValue());
 									}
 
 								}
@@ -457,27 +459,47 @@ public class MysqlDataExtractWithChildTables {
 								// Set the child table keys
 								for (Map.Entry<String, String> keyColumnNameAndDataType : childTableDetails
 										.getKeyColumnNameAndDataType().entrySet()) {
+									
 
 									if (keyColumnNameAndDataType.getValue() != null
 											&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("int")) {
-										childTableDetails.getPreparedStatement().setInt(++columnIndex, Integer
-												.valueOf(jsonNode.get(keyColumnNameAndDataType.getKey()).toString()));
+										String key = keyColumnNameAndDataType.getKey();
+										if (key.equals("salesRepEmployeeNumber")) {
+											childTableDetails.getPreparedStatement().setInt(++columnIndex, Integer
+													.valueOf(jsonNode.get("employeeNumber").toString()));
+										} else {
+											childTableDetails.getPreparedStatement().setInt(++columnIndex, Integer
+													.valueOf(jsonNode.get(keyColumnNameAndDataType.getKey()).toString()));
+										}
+										
 									} else if (keyColumnNameAndDataType.getValue() != null
 											&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("String")) {
 										childTableDetails.getPreparedStatement().setString(++columnIndex,
 												jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
 									} else if (keyColumnNameAndDataType.getValue() != null
 											&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("varchar")) {
-										childTableDetails.getPreparedStatement().setString(++columnIndex,
-												jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
+										System.out.println("Key is :" + jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
+										childTableDetails.getPreparedStatement().setString(++columnIndex, 
+												jsonNode.get(keyColumnNameAndDataType.getKey()).getTextValue());
+										
 									}
 
 								}
+								
+								System.out.println(childTableDetails.getPreparedStatement().toString());
+								
+/*								PreparedStatement preparedStatement = conn.prepareStatement("select MSRP, productScale, quantityInStock, productDescription ,productlines.productLine as  'productLine', productCode, buyPrice, " + 
+										"image, productVendor, htmlDescription, productName, textDescription from  classicmodels.productlines, classicmodels.products " + 
+										"where products.productLine = productlines.productLine and productlines.productLine = ? ");
+								
+								preparedStatement.setString(1, "Classic Cars");*/
 
 								// Execute the child table query
 								ResultSet childTableResultSet = childTableDetails.getPreparedStatement().executeQuery();
-
+								
 								if (childTableResultSet != null) {
+									
+									//System.out.println("Resultset fetch size :" + childTableResultSet.getFetchSize());
 
 									childArrayNode = objectMapper.createArrayNode();
 

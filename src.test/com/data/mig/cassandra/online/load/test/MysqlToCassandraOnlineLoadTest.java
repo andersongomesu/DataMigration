@@ -13,12 +13,19 @@ public class MysqlToCassandraOnlineLoadTest {
 		MysqlToCassandraOnlineLoad mysqlToCassandraOnlineLoad = new MysqlToCassandraOnlineLoad();
 
 		// Extract including the child tables
-		Boolean loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
+/*		Boolean loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
 				IApplicationConstants.defaultMySqlSchemaName, "customers", "mykeyspace", "customers", 2L, true); //payments, order
-		
-		/*Boolean loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
-				IApplicationConstants.defaultMySqlSchemaName, "employees", "mykeyspace", "employees", 2L, true); // customers
+*/		
+/*		Boolean loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
+				IApplicationConstants.defaultMySqlSchemaName, "productlines", "mykeyspace", "productlines", 2L, true); // customers
 */
+		
+/*		Boolean loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
+				IApplicationConstants.defaultMySqlSchemaName, "orders", "mykeyspace", "orders", 10L, true);*/
+		
+		Boolean loadStatus = mysqlToCassandraOnlineLoad.loadDataFromMysqlToCassandra(
+				IApplicationConstants.defaultMySqlSchemaName, "employees", "mykeyspace", "employees", 10L, true);
+		
 		Assert.isTrue(loadStatus);
 	}
 

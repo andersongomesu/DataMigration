@@ -87,6 +87,7 @@ public class MysqlTableRelationship {
 					.prepareStatement(IApplicationConstants.retriveMySqlRelationshipQuery_2);
 			pstmt.setString(1, schemaName);
 			pstmt.setString(2, tableName);
+			pstmt.setString(3, tableName);
 			
 			System.out.println("Relationships of a table :" + IApplicationConstants.retriveMySqlRelationshipQuery_2);
 

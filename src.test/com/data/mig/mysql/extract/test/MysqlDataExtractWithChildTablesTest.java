@@ -50,5 +50,29 @@ public class MysqlDataExtractWithChildTablesTest {
 		conn.close();
 
 	}
+	
+	@Test
+	public void getMysqlDataExtractWithGivenChildTableTest1() throws SQLException {
+		MysqlDatabaseConnect mysqlDatabaseConnect = new MysqlDatabaseConnect();
+
+		Connection conn = mysqlDatabaseConnect.getMySqlDBConnection(
+				IApplicationConstants.defaultMySqlSchemaName,
+				IApplicationConstants.defaultMySqlUserId,
+				IApplicationConstants.defaultMySqlPassword);
+
+		Assert.assertNotNull(conn);
+
+		MysqlDataExtractWithChildTables mysqlDataExtractWithChildTables = new MysqlDataExtractWithChildTables();
+
+		boolean extractResult = mysqlDataExtractWithChildTables.extractMysqlDataIntoJsonFile(IApplicationConstants.defaultMySqlSchemaName, "productlines", 
+				5L, "D:\\Habi\\MS\\Git\\MySQL\\productlines.json");
+		
+		Assert.assertTrue(extractResult);
+		
+		
+
+		conn.close();
+
+	}
 
 }
