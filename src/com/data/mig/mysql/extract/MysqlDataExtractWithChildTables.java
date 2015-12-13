@@ -49,14 +49,14 @@ public class MysqlDataExtractWithChildTables {
 		return extractStatus;
 	}
 
-	public Boolean extractMysqlDataIntoJsonFile(String schemaName, String parentTableName,String childTableName,
+	public Boolean extractMysqlDataIntoJsonFile(String schemaName, String parentTableName, String childTableName,
 			Long noOfRecordsToBeExtracted, String filePath) throws SQLException {
 
 		System.out.println("### Start of extract and file write ###");
 		Boolean extractStatus = false;
 
-		Map<String, Object> targetObject = extractWithGivenChildMysqlDataIntoObject(schemaName, parentTableName,childTableName,
-				noOfRecordsToBeExtracted);
+		Map<String, Object> targetObject = extractWithGivenChildMysqlDataIntoObject(schemaName, parentTableName,
+				childTableName, noOfRecordsToBeExtracted);
 
 		FileIoUtils fileIoUtils = null;
 
@@ -170,16 +170,24 @@ public class MysqlDataExtractWithChildTables {
 
 									if (keyColumnNameAndDataType.getValue() != null
 											&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("int")) {
-										childTableDetails.getPreparedStatement().setInt(++columnIndex, Integer
-												.valueOf(jsonNode.get(keyColumnNameAndDataType.getKey()).toString()));
+										String key = keyColumnNameAndDataType.getKey();
+										if (key.equals("salesRepEmployeeNumber")) {
+											childTableDetails.getPreparedStatement().setInt(++columnIndex,
+													Integer.valueOf(jsonNode.get("employeeNumber").toString()));
+										} else {
+											childTableDetails.getPreparedStatement().setInt(++columnIndex,
+													Integer.valueOf(jsonNode.get(keyColumnNameAndDataType.getKey())
+															.toString()));
+										}
 									} else if (keyColumnNameAndDataType.getValue() != null
 											&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("String")) {
 										childTableDetails.getPreparedStatement().setString(++columnIndex,
 												jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
 									} else if (keyColumnNameAndDataType.getValue() != null
 											&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("varchar")) {
-										System.out.println("Key is :" + jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
-										childTableDetails.getPreparedStatement().setString(++columnIndex, 
+										System.out.println("Key is :"
+												+ jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
+										childTableDetails.getPreparedStatement().setString(++columnIndex,
 												jsonNode.get(keyColumnNameAndDataType.getKey()).getTextValue());
 									}
 
@@ -311,16 +319,25 @@ public class MysqlDataExtractWithChildTables {
 
 									if (keyColumnNameAndDataType.getValue() != null
 											&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("int")) {
-										childTableDetails.getPreparedStatement().setInt(++columnIndex, Integer
-												.valueOf(jsonNode.get(keyColumnNameAndDataType.getKey()).toString()));
+										String key = keyColumnNameAndDataType.getKey();
+										if (key.equals("salesRepEmployeeNumber")) {
+											childTableDetails.getPreparedStatement().setInt(++columnIndex,
+													Integer.valueOf(jsonNode.get("employeeNumber").toString()));
+										} else {
+											childTableDetails.getPreparedStatement().setInt(++columnIndex,
+													Integer.valueOf(jsonNode.get(keyColumnNameAndDataType.getKey())
+															.toString()));
+										}
+
 									} else if (keyColumnNameAndDataType.getValue() != null
 											&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("String")) {
 										childTableDetails.getPreparedStatement().setString(++columnIndex,
 												jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
 									} else if (keyColumnNameAndDataType.getValue() != null
 											&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("varchar")) {
-										System.out.println("Key is :" + jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
-										childTableDetails.getPreparedStatement().setString(++columnIndex, 
+										System.out.println("Key is :"
+												+ jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
+										childTableDetails.getPreparedStatement().setString(++columnIndex,
 												jsonNode.get(keyColumnNameAndDataType.getKey()).getTextValue());
 									}
 
@@ -377,9 +394,9 @@ public class MysqlDataExtractWithChildTables {
 
 	}
 
-	//new
-	public Map<String, Object> extractWithGivenChildMysqlDataIntoObject(String schemaName, String parentTableName,String childTableName,
-			Long noOfRecordsToBeExtracted) throws SQLException {
+	// new
+	public Map<String, Object> extractWithGivenChildMysqlDataIntoObject(String schemaName, String parentTableName,
+			String childTableName, Long noOfRecordsToBeExtracted) throws SQLException {
 
 		System.out.println("### Start of mysql extract process ###");
 
@@ -391,7 +408,6 @@ public class MysqlDataExtractWithChildTables {
 		List<TableDetails> childTableDetailsList = null;
 		List<ChildTableDetails> childTableDetailsDBQueryList = null;
 
-	
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		JsonNode jsonNode = null;
@@ -401,13 +417,16 @@ public class MysqlDataExtractWithChildTables {
 			conn = getDatabaseConnection(schemaName);
 
 			MysqlTableRelationship mysqlTableRelationship = new MysqlTableRelationship();
-			
-			//MysqlTableColumnDetails mysqlTableColumnDetails = new MysqlTableColumnDetails();
+
+			// MysqlTableColumnDetails mysqlTableColumnDetails = new
+			// MysqlTableColumnDetails();
 
 			childTableDetailsList = mysqlTableRelationship.getMysqlTableRelationshipDetailsAsObject(null, schemaName,
 					parentTableName);
-			
-			//Map<String, String>  parentTablePrimaryKeyMap = mysqlTableColumnDetails.getMysqlTablePrimaryKey(conn, schemaName, parentTableName);
+
+			// Map<String, String> parentTablePrimaryKeyMap =
+			// mysqlTableColumnDetails.getMysqlTablePrimaryKey(conn, schemaName,
+			// parentTableName);
 
 			Map<String, String> parentTableColumnDetails = getColumnDetails(conn, schemaName, parentTableName);
 
@@ -427,17 +446,15 @@ public class MysqlDataExtractWithChildTables {
 						childTableDetailsDBQueryList = new ArrayList<ChildTableDetails>();
 						for (TableDetails childTableDetails : childTableDetailsList) {
 
-							if(childTableDetails.getTableName().equalsIgnoreCase(childTableName))
-							{
+							if (childTableDetails.getTableName().equalsIgnoreCase(childTableName)) {
 								// Child table details in the object
 								System.out.println("Child table name :" + childTableDetails.getTableName());
 								Map<String, String> childTableColumnDetailsMap = getColumnDetails(conn, schemaName,
 										childTableDetails.getTableName());
 								childTableColumnDetailsMap.putAll(parentTableColumnDetails);
-								childTableDetailsDBQueryList.add(
-										mysqlDataExtractQueryUtils.constructSelectQueryWithChildTablesUsingJoin(
-												childTableDetailsList, childTableColumnDetailsMap,
-												parentTableName, 
+								childTableDetailsDBQueryList
+										.add(mysqlDataExtractQueryUtils.constructSelectQueryWithChildTablesUsingJoin(
+												childTableDetailsList, childTableColumnDetailsMap, parentTableName,
 												childTableDetails.getTableName(), schemaName, conn));
 							}
 						}
@@ -459,47 +476,57 @@ public class MysqlDataExtractWithChildTables {
 								// Set the child table keys
 								for (Map.Entry<String, String> keyColumnNameAndDataType : childTableDetails
 										.getKeyColumnNameAndDataType().entrySet()) {
-									
 
 									if (keyColumnNameAndDataType.getValue() != null
 											&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("int")) {
 										String key = keyColumnNameAndDataType.getKey();
 										if (key.equals("salesRepEmployeeNumber")) {
-											childTableDetails.getPreparedStatement().setInt(++columnIndex, Integer
-													.valueOf(jsonNode.get("employeeNumber").toString()));
+											childTableDetails.getPreparedStatement().setInt(++columnIndex,
+													Integer.valueOf(jsonNode.get("employeeNumber").toString()));
 										} else {
-											childTableDetails.getPreparedStatement().setInt(++columnIndex, Integer
-													.valueOf(jsonNode.get(keyColumnNameAndDataType.getKey()).toString()));
+											childTableDetails.getPreparedStatement().setInt(++columnIndex,
+													Integer.valueOf(jsonNode.get(keyColumnNameAndDataType.getKey())
+															.toString()));
 										}
-										
+
 									} else if (keyColumnNameAndDataType.getValue() != null
 											&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("String")) {
 										childTableDetails.getPreparedStatement().setString(++columnIndex,
 												jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
 									} else if (keyColumnNameAndDataType.getValue() != null
 											&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("varchar")) {
-										System.out.println("Key is :" + jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
-										childTableDetails.getPreparedStatement().setString(++columnIndex, 
+										System.out.println("Key is :"
+												+ jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
+										childTableDetails.getPreparedStatement().setString(++columnIndex,
 												jsonNode.get(keyColumnNameAndDataType.getKey()).getTextValue());
-										
+
 									}
 
 								}
-								
+
 								System.out.println(childTableDetails.getPreparedStatement().toString());
-								
-/*								PreparedStatement preparedStatement = conn.prepareStatement("select MSRP, productScale, quantityInStock, productDescription ,productlines.productLine as  'productLine', productCode, buyPrice, " + 
-										"image, productVendor, htmlDescription, productName, textDescription from  classicmodels.productlines, classicmodels.products " + 
-										"where products.productLine = productlines.productLine and productlines.productLine = ? ");
-								
-								preparedStatement.setString(1, "Classic Cars");*/
+
+								/*
+								 * PreparedStatement preparedStatement =
+								 * conn.prepareStatement(
+								 * "select MSRP, productScale, quantityInStock, productDescription ,productlines.productLine as  'productLine', productCode, buyPrice, "
+								 * +
+								 * "image, productVendor, htmlDescription, productName, textDescription from  classicmodels.productlines, classicmodels.products "
+								 * +
+								 * "where products.productLine = productlines.productLine and productlines.productLine = ? "
+								 * );
+								 * 
+								 * preparedStatement.setString(1, "Classic Cars"
+								 * );
+								 */
 
 								// Execute the child table query
 								ResultSet childTableResultSet = childTableDetails.getPreparedStatement().executeQuery();
-								
+
 								if (childTableResultSet != null) {
-									
-									//System.out.println("Resultset fetch size :" + childTableResultSet.getFetchSize());
+
+									// System.out.println("Resultset fetch size
+									// :" + childTableResultSet.getFetchSize());
 
 									childArrayNode = objectMapper.createArrayNode();
 
@@ -516,17 +543,21 @@ public class MysqlDataExtractWithChildTables {
 								}
 
 								// Add the child table array into main node
-								//((ObjectNode) jsonNode).put(childTableDetails.getTableName(), childArrayNode);
-								//((ObjectNode) jsonNode).put(parentTableName , childArrayNode);
+								// ((ObjectNode)
+								// jsonNode).put(childTableDetails.getTableName(),
+								// childArrayNode);
+								// ((ObjectNode) jsonNode).put(parentTableName ,
+								// childArrayNode);
 								targetObject.put(parentTableName + parentTableResultSet.getRow(), childArrayNode);
-								
+
 							}
 
 						}
 
 						// Put the node into target object
-						//targetObject.put(parentTableName + parentTableResultSet.getRow(), jsonNode);
-						//targetObject =(ObjectNode)jsonNode;
+						// targetObject.put(parentTableName +
+						// parentTableResultSet.getRow(), jsonNode);
+						// targetObject =(ObjectNode)jsonNode;
 
 					}
 					System.out.println("No of records in target object :" + targetObject.size());
@@ -551,11 +582,6 @@ public class MysqlDataExtractWithChildTables {
 
 	}
 
-	
-	
-	
-	
-	
 	private Connection getDatabaseConnection(String schemaName) {
 
 		MysqlDatabaseConnect mysqlDatabaseConnect = new MysqlDatabaseConnect();
