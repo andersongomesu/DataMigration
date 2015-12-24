@@ -27,7 +27,7 @@ public class MysqlDataExtractWithChildTablesTest {
 
 		MysqlDataExtractWithChildTables mysqlDataExtractWithChildTables = new MysqlDataExtractWithChildTables();
 
-		boolean extractResult = mysqlDataExtractWithChildTables.extractMysqlDataIntoJsonFile(IApplicationConstants.defaultMySqlSchemaName, "customers","orders", 
+		/*boolean extractResult = mysqlDataExtractWithChildTables.extractMysqlDataIntoJsonFile(IApplicationConstants.defaultMySqlSchemaName, "customers","orders", 
 				5L, "D:\\Habi\\MS\\Git\\MySQL\\orders_customers.json");
 		
 		Assert.assertTrue(extractResult);
@@ -35,6 +35,11 @@ public class MysqlDataExtractWithChildTablesTest {
 		extractResult = mysqlDataExtractWithChildTables.extractMysqlDataIntoJsonFile(IApplicationConstants.defaultMySqlSchemaName, "customers","payments", 
 				5L, "D:\\Habi\\MS\\Git\\MySQL\\payments_customers.json");
 		
+		Assert.assertTrue(extractResult);*/
+		
+		boolean extractResult = mysqlDataExtractWithChildTables.extractMysqlDataIntoJsonFile(IApplicationConstants.defaultMySqlSchemaName, "productlines","products", 
+		5L, "D:\\Sampath\\MS\\Dissertation\\MySQL\\products_productlines.json");
+
 		Assert.assertTrue(extractResult);
 		
 		/*boolean extractResult = mysqlDataExtractWithChildTables.extractMysqlDataIntoJsonFile(IApplicationConstants.defaultMySqlSchemaName, "customers","orders", 
@@ -65,7 +70,7 @@ public class MysqlDataExtractWithChildTablesTest {
 		MysqlDataExtractWithChildTables mysqlDataExtractWithChildTables = new MysqlDataExtractWithChildTables();
 
 		boolean extractResult = mysqlDataExtractWithChildTables.extractMysqlDataIntoJsonFile(IApplicationConstants.defaultMySqlSchemaName, "productlines", 
-				5L, "D:\\Habi\\MS\\Git\\MySQL\\productlines.json");
+				5L, "D:\\Sampath\\MS\\Dissertation\\MySQL\\productlines.json");
 		
 		Assert.assertTrue(extractResult);
 		
