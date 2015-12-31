@@ -22,5 +22,17 @@ public class ReadJsonDataFromFileToMongoTest {
 		Assert.assertTrue(fileReadSuccess);
 
 	}
+	
+	@Test
+	public void getOracleDataExtractTest() throws SQLException {
+
+		ReadJsonDataFromFile readJsonDataFromFile = new ReadJsonDataFromFile();
+
+		boolean fileReadSuccess = readJsonDataFromFile.readJsonDataFromFile("test", "mycol111",
+				"D:\\Sampath\\MS\\Dissertation\\MySQL\\oracleextract.json", "EMPLOYEES");
+
+		Assert.assertTrue(fileReadSuccess);
+
+	}	
 
 }
