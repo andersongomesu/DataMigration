@@ -63,6 +63,7 @@ public interface IApplicationConstants {
 		                        " AND a.constraint_name = c.constraint_name " +
 		       " JOIN all_constraints c_pk ON c.r_owner = c_pk.owner " +
 		                           " AND c.r_constraint_name = c_pk.constraint_name " +
+		                           " AND c_pk.table_name <> ? " +
 		       " JOIN ALL_TAB_COLS atc ON a.owner = atc.owner " + 
 		                          " AND a.table_name = atc.table_name " +
 		                          " AND atc.COLUMN_NAME = a.COLUMN_NAME " +

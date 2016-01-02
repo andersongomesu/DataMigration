@@ -81,5 +81,29 @@ public class OracleTableRelationshipTest {
 
 		conn.close();
 
-	}	
+	}
+
+	@Test
+	public void getOracleTableRelationshipAsObjectEmployeeSelfReferenceTest() throws SQLException {
+		OracleDatabaseConnect oracleDatabaseConnect = new OracleDatabaseConnect();
+
+		Connection conn = oracleDatabaseConnect.getOracleDBConnection(
+				IApplicationConstants.defaultOracleUserId,
+				IApplicationConstants.defaultOraclePassword);
+
+		Assert.assertNotNull(conn);
+
+		OracleTableRelationship oracleTableRelationship = new OracleTableRelationship();
+
+		List<TableDetails> tableDetailsList = oracleTableRelationship.getOracleTableRelationshipDetailsAsObject(conn,
+				IApplicationConstants.defaultOracleSchemaName, "EMPLOYEES");
+		
+		Assert.assertNotNull(tableDetailsList);
+		Assert.assertEquals("List of tables not matching", 2, tableDetailsList.size());
+		
+		System.out.println("Table Details List : " + tableDetailsList.toString());
+
+		conn.close();
+
+	}		
 }

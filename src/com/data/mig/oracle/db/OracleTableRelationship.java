@@ -85,8 +85,9 @@ public class OracleTableRelationship {
 
 			pstmt = conn
 					.prepareStatement(IApplicationConstants.retriveOracleRelationshipQuery_2);
-			pstmt.setString(1, schemaName);
-			pstmt.setString(2, tableName);
+			pstmt.setString(1, tableName);
+			pstmt.setString(2, schemaName);
+			pstmt.setString(3, tableName);
 			
 			System.out.println("Relationships of a table :" + IApplicationConstants.retriveOracleRelationshipQuery_2);
 
