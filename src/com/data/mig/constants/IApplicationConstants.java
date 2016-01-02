@@ -22,6 +22,18 @@ public interface IApplicationConstants {
 				"where referenced_table_name is not null and table_schema = ? " +
 				"and referenced_table_name = ? ";
 	
+	String retriveOracleRelationshipQuery = "SELECT concat(a.table_name || '.', a.column_name) as foreign_table_and_column, " +
+	   " a.table_name, a.column_name foreign_key, a.constraint_name, c.owner, " +
+       " c.r_owner, c_pk.table_name foreign_table, c_pk.constraint_name r_pk " +
+       " FROM all_cons_columns a " +
+       " JOIN all_constraints c ON a.owner = c.owner " +
+       " AND a.constraint_name = c.constraint_name " +
+       " JOIN all_constraints c_pk ON c.r_owner = c_pk.owner " +
+       " AND c.r_constraint_name = c_pk.constraint_name " +
+       " WHERE c.constraint_type = 'R' " +
+       " AND a.owner = ? " +
+       " AND a.table_name = ? ";	
+	
 	String retriveMySqlRelationshipQuery_2 =  "select " +
 			"concat(cu.table_name, '.', cu.column_name) as 'foreign_table_and_column', " +
 		    "cu.table_name as 'foreign_table', " +
@@ -40,6 +52,23 @@ public interface IApplicationConstants {
 		    "and cu.table_name = col.table_name " +
 		    "and cu.column_name = col.column_name " +
 		    "and cu.table_name <> ? ";
+	
+	String retriveOracleRelationshipQuery_2 =  "SELECT concat(a.table_name || '.', a.column_name) as foreign_table_and_column,a.table_name, " + 
+		       " a.column_name foreign_key, a.constraint_name, c.owner, " + 
+		       " c.r_owner, c_pk.table_name foreign_table, c_pk.constraint_name r_pk, " +
+		       " c_pk.table_name || '.' || a.COLUMN_NAME references, " +
+		       " atc.DATA_TYPE data_type " +
+		       " FROM all_cons_columns a " +
+		       " JOIN all_constraints c ON a.owner = c.owner " +
+		                        " AND a.constraint_name = c.constraint_name " +
+		       " JOIN all_constraints c_pk ON c.r_owner = c_pk.owner " +
+		                           " AND c.r_constraint_name = c_pk.constraint_name " +
+		       " JOIN ALL_TAB_COLS atc ON a.owner = atc.owner " + 
+		                          " AND a.table_name = atc.table_name " +
+		                          " AND atc.COLUMN_NAME = a.COLUMN_NAME " +
+		       " WHERE c.constraint_type = 'R' " +
+		       " AND a.owner = ? " +
+		       " AND a.table_name = ? ";
 	
 	String retrieveMySQLTableDetails = "Select table_name from information_schema.tables where table_schema = ?";
 	
