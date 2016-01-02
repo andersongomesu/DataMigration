@@ -72,6 +72,8 @@ public interface IApplicationConstants {
 	
 	String retrieveMySQLTableDetails = "Select table_name from information_schema.tables where table_schema = ?";
 	
+	String retrieveOracleTableDetails = "Select table_name from all_tables where owner = ?";
+	
 	String retriveMySqlColumnDetails = "select  table_name, column_name, data_type, column_key " +
 			"FROM information_schema.COLUMNS " +
 			"WHERE table_schema = ? " +
