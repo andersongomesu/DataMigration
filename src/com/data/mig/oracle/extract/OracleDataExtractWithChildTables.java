@@ -317,28 +317,34 @@ public class OracleDataExtractWithChildTables {
 								for (Map.Entry<String, String> keyColumnNameAndDataType : childTableDetails
 										.getKeyColumnNameAndDataType().entrySet()) {
 
-									if (keyColumnNameAndDataType.getValue()	 != null
-											&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("NUMBER")) {
-										String key = keyColumnNameAndDataType.getKey();
-										if (key.equals("salesRepEmployeeNumber")) {
-											childTableDetails.getPreparedStatement().setInt(++columnIndex,
-													Integer.valueOf(jsonNode.get("employeeNumber").toString()));
-										} else {
-											childTableDetails.getPreparedStatement().setInt(++columnIndex,
-													Integer.valueOf(jsonNode.get(keyColumnNameAndDataType.getKey())
-															.toString()));
-										}
+									try {
+										if (keyColumnNameAndDataType.getValue() != null
+												&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("NUMBER")) {
+											String key = keyColumnNameAndDataType.getKey();
+											if (key.equals("salesRepEmployeeNumber")) {
+												childTableDetails.getPreparedStatement().setInt(++columnIndex,
+														Integer.valueOf(jsonNode.get("employeeNumber").toString()));
+											} else {
+												childTableDetails.getPreparedStatement().setInt(++columnIndex,
+														Integer.valueOf(jsonNode.get(keyColumnNameAndDataType.getKey())
+																.toString()));
+											}
 
-									} else if (keyColumnNameAndDataType.getValue() != null
-											&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("String")) {
-										childTableDetails.getPreparedStatement().setString(++columnIndex,
-												jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
-									} else if (keyColumnNameAndDataType.getValue() != null
-											&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("varchar2")) {
-										System.out.println("Key is :"
-												+ jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
-										childTableDetails.getPreparedStatement().setString(++columnIndex,
-												jsonNode.get(keyColumnNameAndDataType.getKey()).getTextValue());
+										} else if (keyColumnNameAndDataType.getValue() != null
+												&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("String")) {
+											childTableDetails.getPreparedStatement().setString(++columnIndex,
+													jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
+										} else if (keyColumnNameAndDataType.getValue() != null
+												&& keyColumnNameAndDataType.getValue().equalsIgnoreCase("varchar2")) {
+											System.out.println("Varchar2 Key is :"
+													+ jsonNode.get(keyColumnNameAndDataType.getKey()).toString());
+											childTableDetails.getPreparedStatement().setString(++columnIndex,
+													jsonNode.get(keyColumnNameAndDataType.getKey()).getTextValue());
+										}
+									} catch (NumberFormatException ne) {
+										System.out.println("Exception while getting the data for child table ...");
+										System.out.println("Key column name is" + keyColumnNameAndDataType.getKey());
+										System.out.println("Json node is :"  + jsonNode.toString());
 									}
 
 								}
@@ -425,7 +431,8 @@ public class OracleDataExtractWithChildTables {
 					parentTableName);
 
 			// Map<String, String> parentTablePrimaryKeyMap =
-			// OracleTableColumnDetails.getOracleTablePrimaryKey(conn, schemaName,
+			// OracleTableColumnDetails.getOracleTablePrimaryKey(conn,
+			// schemaName,
 			// parentTableName);
 
 			Map<String, String> parentTableColumnDetails = getColumnDetails(conn, schemaName, parentTableName);

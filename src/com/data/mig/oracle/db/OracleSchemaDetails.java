@@ -42,7 +42,7 @@ public class OracleSchemaDetails {
 
 				while (rs.next()) {
 					isResultsetHasRecords = true;
-					tableDetailsList.add(rs.getString("table_name"));
+					tableDetailsList.add(schemaName + "." + rs.getString("table_name"));
 				}
 
 			}

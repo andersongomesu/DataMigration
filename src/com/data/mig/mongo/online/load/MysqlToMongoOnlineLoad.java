@@ -32,9 +32,16 @@ public class MysqlToMongoOnlineLoad {
 						sourceTableName, numberOfRecordToBeExtracted);				
 			}
 
-			mongoDatabaseUtils = new MongoDatabaseUtils();
-			dataLoadStatus = mongoDatabaseUtils.writeMapIntoMongoCollectionForOnlineLoad(targetDatabaseName, targetCollectionName,
-					sourceTableName, dataExtractMap);
+			if (dataExtractMap != null && dataExtractMap.size() > 0) {
+				System.out.println("Extract size is :" + dataExtractMap.size());
+				mongoDatabaseUtils = new MongoDatabaseUtils();
+				dataLoadStatus = mongoDatabaseUtils.writeMapIntoMongoCollectionForOnlineLoad(targetDatabaseName, targetCollectionName,
+						sourceTableName, dataExtractMap);
+			} else {
+				System.out.println("No data to extract !!!");
+			}
+			
+			
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

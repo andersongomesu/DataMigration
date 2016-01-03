@@ -10,7 +10,12 @@ public interface IApplicationConstants {
 	
 	String defaultOracleSchemaName = "HR";
 	String defaultOracleUserId = "HR";
-	String defaultOraclePassword = "HR";	
+	String defaultOraclePassword = "HR";
+	
+	String oracleDatabase = "oracle";
+	String mysqlDatabase = "mysql";
+	String mongoDatabase = "mongo";
+	String cassandralDatabase = "cassandra";	
 	
 	String retriveMySqlRelationshipQuery = "select  " +
 				"concat(table_name, '.', column_name) as 'foreign_table_and_column', " +

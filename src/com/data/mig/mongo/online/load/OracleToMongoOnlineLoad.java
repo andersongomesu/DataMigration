@@ -22,11 +22,13 @@ public class OracleToMongoOnlineLoad {
 		try {
 
 			if (isChildTablesRequired) {
+				System.out.println("Load with child table records ...");
 				oracleDataExtractWithChildTables = new OracleDataExtractWithChildTables();
 				dataExtractMap = oracleDataExtractWithChildTables.extractOracleDataIntoObject(sourceSchemaName,
 						sourceTableName, numberOfRecordToBeExtracted);
 				
 			} else {
+				System.out.println("Load with parent table records only...");
 				oracleDataExtract = new OracleDataExtract();
 				dataExtractMap = oracleDataExtract.extractOracleDataIntoObject(sourceSchemaName,
 						sourceTableName, numberOfRecordToBeExtracted);				

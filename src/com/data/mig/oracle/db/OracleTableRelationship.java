@@ -122,7 +122,10 @@ public class OracleTableRelationship {
 			e.printStackTrace();
 		}
 
-		System.out.println("List of table details :" + tableDetailsList.toString());
+		if (tableDetailsList != null) {
+			System.out.println("List of table details :" + tableDetailsList.toString());	
+		}
+		
 		return tableDetailsList;
 
 	}

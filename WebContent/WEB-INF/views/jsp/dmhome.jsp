@@ -120,7 +120,7 @@
 				<div class="form-group">
 					<div class="col-xs-6 col-sm-4">
 						<h4>
-							<span class="label label-default">MySQL Schemas :</span>
+							<span class="label label-default">Schemas :</span>
 						</h4>
 					</div>
 
@@ -219,7 +219,7 @@
 					<div class="col-xs-6 col-sm-4"></div>
 					<div class="col-xs-6 col-sm-4">
 						<input class="btn btn-success" type="submit"
-							onclick="submitForm('showProductLine')" value="Migrate the data">
+							onclick="submitForm('submitOnlineLoad')" value="Migrate the data">
 					</div>
 				</div>
 			</div>
