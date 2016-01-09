@@ -46,13 +46,13 @@ public class DataMigrationHomeController {
 		List<String> tableNameList = mysqlSchemaDetails.getMysqlTableDetails(null,
 				IApplicationConstants.defaultMySqlSchemaName);
 
-		List<String> oracleTableNameList = oracleSchemaDetails.getOracleTableDetails(null,
+		/*List<String> oracleTableNameList = oracleSchemaDetails.getOracleTableDetails(null,
 				IApplicationConstants.defaultOracleSchemaName);
 
 		// Adding the oracle table list to table list
 		if (oracleTableNameList != null && oracleTableNameList.size() > 0) {
 			tableNameList.addAll(oracleTableNameList);
-		}
+		}*/
 
 		List<String> sourceSchemaList = new ArrayList<String>();
 
