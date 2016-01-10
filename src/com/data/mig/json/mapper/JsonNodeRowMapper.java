@@ -45,6 +45,7 @@ public class JsonNodeRowMapper implements RowMapper<JsonNode> {
                 //objectNode.put(column, ((Date) value).getTime());    
             	SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss"); 
             	objectNode.put(column, dt.format((Date) value));
+            	//objectNode.put(column, (Date) value);
             } else if (value instanceof Long) {
                 objectNode.put(column, (Long) value);                
             } else if (value instanceof Double) {

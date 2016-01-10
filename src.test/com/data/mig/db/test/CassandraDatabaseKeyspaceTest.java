@@ -33,7 +33,7 @@ public class CassandraDatabaseKeyspaceTest {
 	    
 		Cluster cluster = cassandraDatabaseConnect.getCassandraDBConnection();
 		
-		Session dbsession = cassandraKeyspace.createCassandraKeyspace(cluster, "mykeyspace");
+		Session dbsession = cassandraKeyspace.createCassandraKeyspace(cluster, "classicmodels");
 		Assert.assertNotNull(dbsession);
 		
 	}
