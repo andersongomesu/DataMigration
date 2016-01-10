@@ -11,20 +11,20 @@ import junit.framework.Assert;
 @SuppressWarnings("deprecation")
 public class ReadJsonDataFromFileToCassandraTest {
 
-	/*@Test
+	@Test
 	public void getMysqlDataExtractWithChildForCassandraTest() throws SQLException {
 
 		ReadJsonDataFromFile readJsonDataFromFile = new ReadJsonDataFromFile();
 
-		boolean fileReadSuccess = readJsonDataFromFile.readJsonDataFromFileintoCassandraDatabase("classicmodels","productlines","mykeyspace",
-				"productlines", "D:\\Habi\\MS\\Git\\MySQL",true);
+/*		boolean fileReadSuccess = readJsonDataFromFile.readJsonDataFromFileintoCassandraDatabase("classicmodels","productlines","mykeyspace",
+				"productlines", "D:\\Habi\\MS\\Git\\MySQL",true);*/
 
-		//boolean fileReadSuccess = readJsonDataFromFile.readJsonDataFromFileintoCassandraDatabase("classicmodels","mykeyspace",
-			//	"customers", "D:\\Sampath\\MS\\Dissertation\\MySQL\\");
+		boolean fileReadSuccess = readJsonDataFromFile.readJsonDataFromFileintoCassandraDatabase("classicmodels","customers","mykeyspace",
+				"customers", "D:\\Habi\\MS\\Git\\MySQL\\CassandraExtracts\\",true);
 		
 		Assert.assertTrue(fileReadSuccess);
 
-	}*/
+	}
 	@Test
 	public void getMysqlDataExtractForCassandraTest() throws SQLException {
 

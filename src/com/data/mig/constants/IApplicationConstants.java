@@ -111,4 +111,6 @@ public interface IApplicationConstants {
 	
 	String onlineLoadFailureMessage = "Data migration failed !!!";
 	
+	String invalidSelectionMessage = "The selection combination is not as expected !!!";
+	
 }

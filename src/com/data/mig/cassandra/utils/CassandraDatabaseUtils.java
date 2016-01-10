@@ -186,12 +186,12 @@ public class CassandraDatabaseUtils {
 
 	public String dataTypeFinder(Object value, String key) {
 
-		String datatype = "text";
+		String datatype = "varchar";
 		if (key.equalsIgnoreCase("image")) {
 			datatype = "blob";
 		}
-		else if (value == null) {
-			datatype = "text";
+		else if (value == null || value == "null") {
+			datatype = "varchar";
 		} else if (value instanceof Integer) {
 			//datatype = "varint";
 			datatype = "int";
@@ -250,9 +250,11 @@ public class CassandraDatabaseUtils {
 		String columnFamilyName = null;
 		if (childColumnFamilyName != null) {
 			columnFamilyName = childColumnFamilyName + "_By_" + rootColumnFamilyName;
-		} else
+		} else {
 			columnFamilyName = rootColumnFamilyName;
+		}
 
+		System.out.println("######## Cassandra column family name :" + columnFamilyName);
 		String createColumnFamilyCommand = "Create TABLE " + columnFamilyName + " (" + columnFamilyName + "_id uuid, ";
 
 		Iterator jsonIterator = jsonObject.entrySet().iterator();

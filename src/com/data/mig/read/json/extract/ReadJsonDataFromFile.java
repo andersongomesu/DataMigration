@@ -41,87 +41,80 @@ public class ReadJsonDataFromFile {
 		return loadStatus;
 	}
 
-	
-	public boolean readJsonDataFromFileintoCassandraDatabase(String schemaName,String tableName, String keySpaceName,String rootColumnFamilyName,String folderPath,boolean isChildColumnFamilyRequired) {
+	public boolean readJsonDataFromFileintoCassandraDatabase(String schemaName, String tableName, String keySpaceName,
+			
+			
+			String rootColumnFamilyName, String folderPath, boolean isChildColumnFamilyRequired) {
 
 		boolean loadStatus = false;
-		
-		String childColumnFamilyName  = null;
+
+		String childColumnFamilyName = null;
 		String fileName = null;
-		String filePath= null;
-		
+		String filePath = null;
+
 		System.out.println("### Start of JSON file read process ###");
-		
-		if(isChildColumnFamilyRequired)
-		{
-		
-		//1. Read & Verify all filenamesfrom Folder
-		 List<TableDetails> childColumnFamilyList = getMysqlTableRelationshipDetails(schemaName,rootColumnFamilyName);
-			for(TableDetails childColumnFamily: childColumnFamilyList) {
-		    childColumnFamilyName  = (String) childColumnFamily.getTableName();
-		
-		    fileName =childColumnFamilyName+"_"+rootColumnFamilyName+".json";
-		    
-			boolean fileFound = verifyFileExists(folderPath,fileName);
-			
-				if(fileFound)
-				{
+
+		if (isChildColumnFamilyRequired) {
+
+			// 1. Read & Verify all filenamesfrom Folder
+			List<TableDetails> childColumnFamilyList = getMysqlTableRelationshipDetails(schemaName,
+					rootColumnFamilyName);
+			for (TableDetails childColumnFamily : childColumnFamilyList) {
+				childColumnFamilyName = (String) childColumnFamily.getTableName();
+
+				fileName = childColumnFamilyName + "_" + rootColumnFamilyName + ".json";
+
+				boolean fileFound = verifyFileExists(folderPath, fileName);
+
+				if (fileFound) {
 					// 1. Read from file
-					filePath = folderPath+"/"+fileName;
+					filePath = folderPath + "/" + fileName;
 					Map<String, Object> jsonDataMap = readFile(filePath, rootColumnFamilyName);
 					CassandraDatabaseUtils cassandradatabaseUtils = new CassandraDatabaseUtils();
-			
+
 					// 2. Load into Cassandra
-					loadStatus = cassandradatabaseUtils.writeMapIntoCassandraDatabase(schemaName,tableName,keySpaceName, rootColumnFamilyName,childColumnFamilyName, jsonDataMap);
+					loadStatus = cassandradatabaseUtils.writeMapIntoCassandraDatabase(schemaName, tableName,
+							keySpaceName, rootColumnFamilyName, childColumnFamilyName, jsonDataMap);
 					System.out.println("### End of JSON file read process ###");
 				}
 			}
-		}
-		else
-		{
+		} else {
 			// 1. Read from file
-			filePath = folderPath;
+			filePath = folderPath + "/" + rootColumnFamilyName + ".json";
 			Map<String, Object> jsonDataMap = readFile(filePath, rootColumnFamilyName);
 			CassandraDatabaseUtils cassandradatabaseUtils = new CassandraDatabaseUtils();
 
 			// 2. Load into Mongo collection
-			loadStatus = cassandradatabaseUtils.writeMapIntoCassandraDatabase(schemaName,tableName,keySpaceName, rootColumnFamilyName,null, jsonDataMap);
+			loadStatus = cassandradatabaseUtils.writeMapIntoCassandraDatabase(schemaName, tableName, keySpaceName,
+					rootColumnFamilyName, null, jsonDataMap);
 		}
 		return loadStatus;
 	}
-	
-	public boolean verifyFileExists(String folderPath,String fileName)
-	{
-		
-		 boolean fileFound =false;
-		
-		 File filePath = new File(folderPath+"/"+fileName);
-		 
-		 if(filePath.exists())
-		 {
-		/* File[] listOfFiles = folder.listFiles();
-		 for (int i = 0; i < listOfFiles.length; i++) {
-	         if (listOfFiles[i].isFile()) {
-			         System.out.println("File " + listOfFiles[i].getName());
-			         if(listOfFiles[i].getName().equalsIgnoreCase(fileName))
-			      } 
-	         else if (listOfFiles[i].isDirectory()) {
-			        System.out.println("Directory " + listOfFiles[i].getName());
-			      }
-		     }*/
-			 fileFound=true;
-			 
-		 }
-		 else if(!filePath.exists())
-		 {
-			 System.out.println("extract file not found "+ filePath);
-		 }
-		 
-	     return fileFound;
-	}
-  
 
-	
+	public boolean verifyFileExists(String folderPath, String fileName) {
+
+		boolean fileFound = false;
+
+		File filePath = new File(folderPath + "/" + fileName);
+
+		if (filePath.exists()) {
+			/*
+			 * File[] listOfFiles = folder.listFiles(); for (int i = 0; i <
+			 * listOfFiles.length; i++) { if (listOfFiles[i].isFile()) {
+			 * System.out.println("File " + listOfFiles[i].getName());
+			 * if(listOfFiles[i].getName().equalsIgnoreCase(fileName)) } else if
+			 * (listOfFiles[i].isDirectory()) { System.out.println("Directory "
+			 * + listOfFiles[i].getName()); } }
+			 */
+			fileFound = true;
+
+		} else if (!filePath.exists()) {
+			System.out.println("extract file not found " + filePath);
+		}
+
+		return fileFound;
+	}
+
 	public Map<String, Object> readFile(String filePath, String rootTableName) {
 
 		FileReader reader = null;
@@ -163,14 +156,13 @@ public class ReadJsonDataFromFile {
 		return jsonMap;
 	}
 
-  private List<TableDetails> getMysqlTableRelationshipDetails(String schemaName, String tableName) {
-		
+	private List<TableDetails> getMysqlTableRelationshipDetails(String schemaName, String tableName) {
+
 		MysqlDatabaseConnect mysqlDatabaseConnect = new MysqlDatabaseConnect();
 
-		Connection conn= mysqlDatabaseConnect.getMySqlDBConnection(schemaName, IApplicationConstants.defaultMySqlUserId,
-				IApplicationConstants.defaultMySqlPassword);
+		Connection conn = mysqlDatabaseConnect.getMySqlDBConnection(schemaName,
+				IApplicationConstants.defaultMySqlUserId, IApplicationConstants.defaultMySqlPassword);
 
-		
 		MysqlTableRelationship mysqlTableRelationship = new MysqlTableRelationship();
 		List<TableDetails> childTableDetailsList = mysqlTableRelationship.getMysqlTableRelationshipDetailsAsObject(conn,
 				IApplicationConstants.defaultMySqlSchemaName, tableName);

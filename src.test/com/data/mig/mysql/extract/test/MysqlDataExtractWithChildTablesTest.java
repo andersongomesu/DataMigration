@@ -37,7 +37,7 @@ public class MysqlDataExtractWithChildTablesTest {
 		
 		Assert.assertTrue(extractResult);*/
 		
-		boolean extractResult = mysqlDataExtractWithChildTables.extractMysqlDataIntoJsonFile(IApplicationConstants.defaultMySqlSchemaName, "productlines","products", 
+		boolean extractResult = mysqlDataExtractWithChildTables.extractMysqlDataIntoJsonFileForCassandra(IApplicationConstants.defaultMySqlSchemaName, "productlines","products", 
 		5L, "D:\\Sampath\\MS\\Dissertation\\MySQL\\products_productlines.json");
 
 		Assert.assertTrue(extractResult);

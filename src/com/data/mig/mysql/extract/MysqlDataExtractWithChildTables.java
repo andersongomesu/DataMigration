@@ -49,7 +49,8 @@ public class MysqlDataExtractWithChildTables {
 		return extractStatus;
 	}
 
-	public Boolean extractMysqlDataIntoJsonFile(String schemaName, String parentTableName, String childTableName,
+	//Cassandra specific
+	public Boolean extractMysqlDataIntoJsonFileForCassandra(String schemaName, String parentTableName, String childTableName,
 			Long noOfRecordsToBeExtracted, String filePath) throws SQLException {
 
 		System.out.println("### Start of extract and file write ###");
